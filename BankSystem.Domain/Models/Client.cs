@@ -12,9 +12,25 @@ namespace BankSystem.Domain.Models
         public int PersonalAccount { get { return _personalAccount; } }
 
 
-        public void AddAccount(int summ)
+        public Client(string name) : base(name) { }
+
+        public void AddAccountBalance(int summ)
         {
             _personalAccount += summ;
+        }
+
+        public bool UseAccountBalance(int summ)
+        {
+            bool result = false;
+
+            if (_personalAccount >= summ)
+            {
+                _personalAccount -= summ;
+                result = true;
+            }
+
+            return result;
+
         }
 
     }

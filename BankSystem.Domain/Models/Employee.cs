@@ -10,7 +10,18 @@ namespace BankSystem.Domain.Models
     {
         public string Contract {  get; set; } = "";
 
-        public int Salary { get; }
+        private int _salary = 0;
+        public int Salary { get { return _salary; } }
+
+
+        public Employee(string name) : base(name) { }
+
+        public void SetSalary(int summ)
+        {
+            //проверки напрашиваются
+            _salary = summ;
+        }
+
 
 
 

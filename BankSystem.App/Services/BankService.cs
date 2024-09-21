@@ -20,7 +20,7 @@ namespace BankSystem.App.Services
 
                 foreach (Employee employee in employees)
                 {
-                    employee.Salary = salaryForEmployee;
+                    employee.SetSalary(salaryForEmployee);
                 }
             }
         }
@@ -28,8 +28,7 @@ namespace BankSystem.App.Services
 
         public static Employee SetClientAsEmployee(Client client)
         {
-            Person person = client;
-            return (Employee)person;
+            return new Employee(client.Name);
         }
         
 
