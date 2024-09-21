@@ -8,5 +8,8 @@ namespace BankSystem.Domain.Models
 {
     internal class Employee : Person
     {
+        public string Contract {  get; set; } = "";
+
+
     }
 }

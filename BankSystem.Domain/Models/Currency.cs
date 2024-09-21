@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Domain.Models
 {
-    internal class Person
+    internal struct Currency
     {
-        public string Name { get; set; } = "";
-        public DateOnly Birthday { get; set; }
+        public string Name { get; set; }
+        public int Code { get; set; }
+
 
     }
 }
