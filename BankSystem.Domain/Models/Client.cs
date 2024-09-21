@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Domain.Models
 {
-    internal class Client
+    internal class Client : Person
     {
     }
 }
