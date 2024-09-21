@@ -10,6 +10,10 @@ namespace BankSystem.Domain.Models
     {
         public string Contract {  get; set; } = "";
 
+        public int Salary { get; }
+
+
+
 
     }
 }

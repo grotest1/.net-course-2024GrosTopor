@@ -17,8 +17,8 @@ internal class Program
 
 
 
-        //Client client = new Client();
-        //BankService.SetClientAsEmployee(client);
+        Client client = new Client();
+        var employee_2 = BankService.SetClientAsEmployee(client);
 
 
 

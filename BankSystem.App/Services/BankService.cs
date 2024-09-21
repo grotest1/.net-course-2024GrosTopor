@@ -11,9 +11,21 @@ namespace BankSystem.App.Services
     {
         
 
-        
-        
-        
+        public static void CalculateSalary(int arrive, int expenses, Employee[] employees)
+        {
+            int empCount = employees.Count();
+            if (empCount > 0)
+            {
+                int salaryForEmployee = (arrive - expenses) / empCount;
+
+                foreach (Employee employee in employees)
+                {
+                    employee.Salary = salaryForEmployee;
+                }
+            }
+        }
+
+
         public static Employee SetClientAsEmployee(Client client)
         {
             Person person = client;
