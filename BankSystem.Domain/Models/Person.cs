@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Domain.Models
 {
-    internal class Person
+    public class Person
     {
         public string Name { get; set; } = "";
         public DateOnly Birthday { get; set; }
