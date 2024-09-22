@@ -9,8 +9,6 @@ namespace BankSystem.App.Services
 {
     public static class BankService
     {
-        
-
         public static void CalculateSalary(int arrive, int expenses, Employee[] employees)
         {
             int empCount = employees.Count();
@@ -20,20 +18,17 @@ namespace BankSystem.App.Services
 
                 foreach (Employee employee in employees)
                 {
-                    employee.SetSalary(salaryForEmployee);
+                    employee.Salary = salaryForEmployee;
                 }
             }
         }
 
-
         public static Employee SetClientAsEmployee(Client client)
         {
-            return new Employee(client.Name);
+            Employee emp = new Employee();
+            emp.Name = client.Name;
+            
+            return emp;
         }
-        
-
-
-
-
     }
 }

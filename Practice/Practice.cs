@@ -9,7 +9,7 @@ internal class Program
     private static void Main(string[] args)
     {
 
-        Employee employee_1 = new Employee("Ионел") {Birthday = new DateOnly(1999, 9, 9)};
+        Employee employee_1 = new Employee() {Name = "Ионел", Birthday = new DateOnly(1999, 9, 9)};
         UpdateEmployeeContract(employee_1);
 
 
@@ -17,7 +17,8 @@ internal class Program
         UpdateCurrency(ref rub);
 
 
-        Client client = new Client("Василий");
+        Client client = new Client();
+        client.Name = "Иннокентий";
         var employee_2 = BankService.SetClientAsEmployee(client);
 
 
