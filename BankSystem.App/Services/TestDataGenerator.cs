@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.App.Services
 {
-    internal static class TestDataGenerator
+    public static class TestDataGenerator
     {
         public static List<Client> GenerateClientList1000()
         {

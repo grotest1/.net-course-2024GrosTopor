@@ -1,5 +1,6 @@
 ﻿using BankSystem.App.Services;
 using BankSystem.Domain.Models;
+using System.Diagnostics;
 
 
 
@@ -8,6 +9,8 @@ internal class Program
 
     private static void Main(string[] args)
     {
+
+        #region RefAndValTypes
 
         Employee employee_1 = new Employee() {Name = "Ионел", Birthday = new DateOnly(1999, 9, 9)};
         UpdateEmployeeContract(employee_1);
@@ -36,5 +39,18 @@ internal class Program
             currency.Name = "Rub";
             currency.Code = 456;
         }
+
+        #endregion
+
+    
+        List<Client> clientsList = TestDataGenerator.GenerateClientList1000();
+        Dictionary<string, Client> clientsDictionary = TestDataGenerator.GenerateClientDictionary1000();
+        List<Employee> employeesList = TestDataGenerator.GenerateEmployeeList1000();
+
+
+        Stopwatch stopwatch = new Stopwatch();
+
+    
+    
     }
 }
