@@ -34,7 +34,7 @@ namespace BankSystem.App.Services
             {
                 SetRandomePersonData(rnd, out string name, out DateOnly birthday, out string phoneNumber);
                 Client client = new Client() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber };                
-                resultDictionary.TryAdd(phoneNumber, client); // хз ... через TryAdd или проверку на отсутствие дубля и Add ...
+                resultDictionary.TryAdd(phoneNumber, client);
             }
 
             return resultDictionary;
