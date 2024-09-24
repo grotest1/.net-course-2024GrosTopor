@@ -34,18 +34,20 @@ internal class Program
         long duractionDictionaryFindInMS = stopwatch.ElapsedMilliseconds;
 
 
-        //stopwatch.Restart();
-        //var result2 = clientsDictionary[phone];
-        //stopwatch.Stop();
-        //long duractionDictionaryFindInMS = stopwatch.ElapsedMilliseconds;
+        int ageVal = 30;
+        DateTime dateTimeNow = DateTime.Now;
+        DateOnly dateVal = new DateOnly(dateTimeNow.Year - ageVal, dateTimeNow.Month, dateTimeNow.Day);
+
+        stopwatch.Restart();
+        var result3 = clientsList.Where(c => c.Birthday < dateVal).ToList();
+        stopwatch.Stop();
+        long duractionClientsAgeFindInMS = stopwatch.ElapsedMilliseconds;
 
 
         stopwatch.Restart();
         var result4 = employeesList.Where(e => e.Salary > 0).OrderBy(e => e.Salary).FirstOrDefault();
         stopwatch.Stop();
         long duractionEmployeeFindInMS = stopwatch.ElapsedMilliseconds;
-
-
 
     }
 }
