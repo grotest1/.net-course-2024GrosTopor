@@ -26,16 +26,15 @@ namespace BankSystem.App.Services
 
         public static Dictionary<string, Client> GenerateClientDictionary1000()
         {
-            Dictionary<string, Client> resultDictionary = new Dictionary<string, Client>;
+            Dictionary<string, Client> resultDictionary = new Dictionary<string, Client>();
 
             Random rnd = new Random();
 
             for (int i = 0; i < 1000; i++)
             {
                 SetRandomePersonData(rnd, out string name, out DateOnly birthday, out string phoneNumber);
-                Client client = new Client() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber };
-                // ??????                
-                resultDictionary.TryAdd(phoneNumber, client);
+                Client client = new Client() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber };                
+                resultDictionary.TryAdd(phoneNumber, client); // хз ... через TryAdd или проверку на отсутствие дубля и Add ...
             }
 
             return resultDictionary;
