@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{7FB5AFAE-00AD-4A0E-9E1C-84D3E54A5314}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7FB5AFAE-00AD-4A0E-9E1C-84D3E54A5314}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{2DAB60D7-5A6B-4CEC-A89D-2D0EA563B334}"
 EndProject
@@ -16,9 +16,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice", "Practice\Practice.csproj", "{B7546A9E-191A-49E1-AD43-2CC853658DC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankSystem.App", "BankSystem.App\BankSystem.App.csproj", "{585606CD-A55D-4F1E-B361-6A7A3B4803D6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2E1A9B07-E1C6-43D8-9F25-8299E8A6A615} = {2E1A9B07-E1C6-43D8-9F25-8299E8A6A615}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
