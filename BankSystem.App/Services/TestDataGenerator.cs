@@ -32,7 +32,7 @@ namespace BankSystem.App.Services
 
             for (int i = 0; i < 1000; i++)
             {
-                SetRandomePersonData(rnd, out string name, out DateOnly birthday, out string phoneNumber, , out int salary);
+                SetRandomePersonData(rnd, out string name, out DateOnly birthday, out string phoneNumber, out int salary);
                 Client client = new Client() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber };                
                 resultDictionary.TryAdd(phoneNumber, client);
             }
