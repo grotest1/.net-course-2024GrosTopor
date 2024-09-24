@@ -26,7 +26,7 @@ namespace BankSystem.App.Services
 
         public static Dictionary<string, Client> GenerateClientDictionary1000()
         {
-            Dictionary<string, Client> resultDictionary = new Dictionary<string, Client>;
+            Dictionary<string, Client> resultDictionary = new Dictionary<string, Client>();
 
             Random rnd = new Random();
 
