@@ -49,7 +49,7 @@ namespace BankSystem.App.Services
             for (int i = 0; i < 1000; i++)
             {
                 SetRandomePersonData(rnd, out string name, out DateOnly birthday, out string phoneNumber, out int salary);
-                result_list.Add(new Employee() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber });
+                result_list.Add(new Employee() { Name = name, Birthday = birthday, PersonalPhoneNumber = phoneNumber, Salary = salary});
             }
 
             return result_list;
