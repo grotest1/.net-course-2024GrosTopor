@@ -68,7 +68,7 @@ namespace BankSystem.App.Services
             while (phoneNumber.Length < 8)
                 phoneNumber += rnd.Next(1, 9).ToString();
 
-            salary = rnd.Next(0, 10_000);
+            salary = rnd.Next(100, 10_000);
         }
 
     }
