@@ -12,7 +12,9 @@ internal class Program
         List<Client> clientsList = TestDataGenerator.GenerateClientList1000();
         List<Client> clientsListBogus = TestDataGenerator.GenerateClientList1000Bogus();
         Dictionary<string, Client> clientsDictionary = TestDataGenerator.GenerateClientDictionary1000();
+        Dictionary<string, Client> clientsDictionaryBogus = TestDataGenerator.GenerateClientDictionary1000Bogus();
         List<Employee> employeesList = TestDataGenerator.GenerateEmployeeList1000();
+        List<Employee> employeesListBogus = TestDataGenerator.GenerateEmployeeList1000Bogus();
 
 
         string phone = "777122345";
