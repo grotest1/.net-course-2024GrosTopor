@@ -10,6 +10,7 @@ internal class Program
     private static void Main(string[] args)
     {    
         List<Client> clientsList = TestDataGenerator.GenerateClientList1000();
+        List<Client> clientsListBogus = TestDataGenerator.GenerateClientList1000Bogus();
         Dictionary<string, Client> clientsDictionary = TestDataGenerator.GenerateClientDictionary1000();
         List<Employee> employeesList = TestDataGenerator.GenerateEmployeeList1000();
 
