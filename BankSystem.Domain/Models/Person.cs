@@ -10,6 +10,6 @@ namespace BankSystem.Domain.Models
     {
         public string Name { get; set; } = "";
         public DateOnly Birthday { get; set; }
-        public string PersonalPhoneNumber { get; set; }
+        public string PersonalPhoneNumber { get; set; } = "";
     }
 }

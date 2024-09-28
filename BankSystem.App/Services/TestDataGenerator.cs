@@ -72,20 +72,30 @@ namespace BankSystem.App.Services
             salary = rnd.Next(100, 10_000);
         }
 
-        public static List<Client> GenerateClientList1000Bogus()
+        public static List<Client> GenerateClientList(int countElements)
         {
             var faker = new Faker<Client>("ru")
                .RuleFor(p => p.Name, f => f.Name.FirstName())
                .RuleFor(p => p.Birthday, f => f.Date.BetweenDateOnly(new DateOnly(1950, 1, 1), new DateOnly(2020, 1, 1)))
                .RuleFor(p => p.PersonalPhoneNumber, f => f.Phone.PhoneNumber("########"));
 
-            return faker.Generate(1000);
+            return faker.Generate(countElements);
+        }
+
+        public static List<Account> GenerateAccountList(int countElements)
+        {
+            var faker = new Faker<Account>("ru")
+               .RuleFor(p => p.Amount, f => f.Random.Int(-1000, 1000))
+               .RuleFor(p => p.Currency.Name, f => f.Name.FirstName())
+               .RuleFor(p => p.Currency.Code, f => f.Random.Int(100, 600));
+
+            return faker.Generate(countElements);
         }
 
         public static Dictionary<string, Client> GenerateClientDictionary1000Bogus()
         {
             Dictionary<string, Client> resultDictionary = new Dictionary<string, Client>();
-            List<Client> randomClients = GenerateClientList1000Bogus();
+            List<Client> randomClients = GenerateClientList(1000);
 
             foreach (Client rndClient in randomClients)
             {
@@ -105,5 +115,20 @@ namespace BankSystem.App.Services
 
             return faker.Generate(1000);
         }
+
+        public static Dictionary<Client, Account> GenerateSomeData(int countElements)
+        {
+            Dictionary<Client, Account> resultDictionary = new Dictionary<Client, Account>();
+            List<Client> randomClients = GenerateClientList(countElements);
+            List<Account> randomAccounts = GenerateAccountList(countElements);
+
+            for (int i = 0; i < countElements; i++)
+            {
+                resultDictionary.TryAdd(randomClients[i], randomAccounts[i]);
+            }
+
+            return resultDictionary;
+        }
+
     }
 }
