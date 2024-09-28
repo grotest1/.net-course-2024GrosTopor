@@ -12,7 +12,6 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetHashCodeNecessityPositivTest()
         {
-            //Arrange
             Dictionary<Client, Account> testData = TestDataGenerator.GenerateSomeData_Simple(10);
             KeyValuePair<Client, Account> firstElement = testData.FirstOrDefault();
 
@@ -24,17 +23,14 @@ namespace BancSystem.App.Tests
                 PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
             };
 
-            //Act
             Account accountResult = testData[newClient];
 
-            //Assert
             Assert.Equal(firstElement.Value, accountResult);
         }
 
         [Fact]
         public void GetHashCodeNecessityPositivTest_AccountArray()
         {
-            //Arrange
             Dictionary<Client, Account[]> testData = TestDataGenerator.GenerateSomeData_Array(10);
             KeyValuePair<Client, Account[]> firstElement = testData.FirstOrDefault();
 
@@ -46,32 +42,28 @@ namespace BancSystem.App.Tests
                 PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
             };
 
-            //Act
             Account[] accountResult = testData[newClient];
 
-            //Assert
             Assert.Equal(firstElement.Value, accountResult);
         }
 
         [Fact]
         public void GetHashCodeNecessityEmployeeList()
         {
-            //Arrange
             List<Employee> employees = TestDataGenerator.GenerateEmployeeList(10);
             Employee lastEmployee = employees.Last();
             Employee newClient = new Employee
             {
                 Name = lastEmployee.Name,
                 Birthday = lastEmployee.Birthday,
-                PersonalPhoneNumber = lastEmployee.PersonalPhoneNumber
+                PersonalPhoneNumber = lastEmployee.PersonalPhoneNumber,
+                Contract = lastEmployee.Contract,
+                Salary = lastEmployee.Salary
             };
 
-            //Act
-            //Account[] accountResult = testData[newClient];
+            Employee employeeFind = employees.First(e => e == newClient);
 
-
-            //Assert
-            //Assert.Equal(firstElement.Value, accountResult);
+            Assert.Equal(employeeFind, lastEmployee);
         }
 
 
