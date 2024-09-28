@@ -32,7 +32,7 @@ namespace BancSystem.App.Tests
         }
 
         [Fact]
-        public void GetHashCodeNecessityPositivTest_Array()
+        public void GetHashCodeNecessityPositivTest_AccountArray()
         {
             //Arrange
             Dictionary<Client, Account[]> testData = TestDataGenerator.GenerateSomeData_Array(10);
@@ -52,6 +52,28 @@ namespace BancSystem.App.Tests
             //Assert
             Assert.Equal(firstElement.Value, accountResult);
         }
+
+        [Fact]
+        public void GetHashCodeNecessityEmployeeList()
+        {
+            //Arrange
+            List<Employee> employees = TestDataGenerator.GenerateEmployeeList(10);
+            Employee lastEmployee = employees.Last();
+            Employee newClient = new Employee
+            {
+                Name = lastEmployee.Name,
+                Birthday = lastEmployee.Birthday,
+                PersonalPhoneNumber = lastEmployee.PersonalPhoneNumber
+            };
+
+            //Act
+            //Account[] accountResult = testData[newClient];
+
+
+            //Assert
+            //Assert.Equal(firstElement.Value, accountResult);
+        }
+
 
     }
 }
