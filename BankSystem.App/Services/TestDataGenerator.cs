@@ -120,11 +120,15 @@ namespace BankSystem.App.Services
         {
             Dictionary<Client, Account> resultDictionary = new Dictionary<Client, Account>();
             List<Client> randomClients = GenerateClientList(countElements);
-            List<Account> randomAccounts = GenerateAccountList(countElements);
+
+            Random rnd = new Random();
+
+            Currency currencyRub = new Currency { Name = "Rub", Code = 456 };
 
             for (int i = 0; i < countElements; i++)
             {
-                resultDictionary.TryAdd(randomClients[i], randomAccounts[i]);
+                Account account = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+                resultDictionary.TryAdd(randomClients[i], account);
             }
 
             return resultDictionary;

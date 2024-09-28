@@ -8,7 +8,6 @@ namespace BankSystem.Domain.Models
 {
     public class Client : Person
     {
-        private int _personalAccount = 0;
-        public int PersonalAccount { get { return _personalAccount; } }
+        
     }
 }
