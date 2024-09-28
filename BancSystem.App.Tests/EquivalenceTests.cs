@@ -13,9 +13,9 @@ namespace BancSystem.App.Tests
         public void GetHashCodeNecessityPositivTest()
         {
             //Arrange
-            Dictionary<Client, Account> testData = TestDataGenerator.GenerateSomeData(10);
+            Dictionary<Client, Account> testData = TestDataGenerator.GenerateSomeData_Simple(10);
             KeyValuePair<Client, Account> firstElement = testData.FirstOrDefault();
-            
+
             Client clientFromTestData = firstElement.Key;
             Client newClient = new Client
             {
@@ -24,14 +24,33 @@ namespace BancSystem.App.Tests
                 PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
             };
 
-
             //Act
             Account accountResult = testData[newClient];
 
+            //Assert
+            Assert.Equal(firstElement.Value, accountResult);
+        }
+
+        [Fact]
+        public void GetHashCodeNecessityPositivTest_Array()
+        {
+            //Arrange
+            Dictionary<Client, Account[]> testData = TestDataGenerator.GenerateSomeData_Array(10);
+            KeyValuePair<Client, Account[]> firstElement = testData.FirstOrDefault();
+
+            Client clientFromTestData = firstElement.Key;
+            Client newClient = new Client
+            {
+                Name = clientFromTestData.Name,
+                Birthday = clientFromTestData.Birthday,
+                PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
+            };
+
+            //Act
+            Account[] accountResult = testData[newClient];
 
             //Assert
             Assert.Equal(firstElement.Value, accountResult);
-
         }
 
     }

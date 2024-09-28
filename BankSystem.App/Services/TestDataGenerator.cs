@@ -116,7 +116,7 @@ namespace BankSystem.App.Services
             return faker.Generate(1000);
         }
 
-        public static Dictionary<Client, Account> GenerateSomeData(int countElements)
+        public static Dictionary<Client, Account> GenerateSomeData_Simple(int countElements)
         {
             Dictionary<Client, Account> resultDictionary = new Dictionary<Client, Account>();
             List<Client> randomClients = GenerateClientList(countElements);
@@ -129,6 +129,30 @@ namespace BankSystem.App.Services
             {
                 Account account = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
                 resultDictionary.TryAdd(randomClients[i], account);
+            }
+
+            return resultDictionary;
+        }
+
+        public static Dictionary<Client, Account[]> GenerateSomeData_Array(int countElements)
+        {
+            Dictionary<Client, Account[]> resultDictionary = new Dictionary<Client, Account[]>();
+            List<Client> randomClients = GenerateClientList(countElements);
+
+            Random rnd = new Random();
+
+            Currency currencyRub = new Currency { Name = "Rub", Code = 456 };
+
+            for (int i = 0; i < countElements; i++)
+            {
+
+                int rndCountAccounts = rnd.Next(1, 5);
+                Account[] clientAccounts = new Account[rndCountAccounts];
+
+                for (int j = 0; j < rndCountAccounts; j++)
+                    clientAccounts[j] = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+ 
+                resultDictionary.TryAdd(randomClients[i], clientAccounts);
             }
 
             return resultDictionary;
