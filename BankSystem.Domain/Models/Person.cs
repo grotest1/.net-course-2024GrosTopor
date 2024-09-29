@@ -31,10 +31,5 @@ namespace BankSystem.Domain.Models
         {
             return Name.GetHashCode() + Birthday.GetHashCode() + PersonalPhoneNumber.GetHashCode();
         }
-
-        public static bool operator ==(Person? a, Person? b) => Equals(a, b);
-
-        public static bool operator !=(Person? a, Person? b) => !Equals(a, b);
-
     }
 }

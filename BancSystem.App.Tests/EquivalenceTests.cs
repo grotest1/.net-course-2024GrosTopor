@@ -12,7 +12,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetHashCodeNecessityPositivTest()
         {
-            Dictionary<Client, Account> testData = TestDataGenerator.GenerateSomeData_Simple(10);
+            Dictionary<Client, Account> testData = TestDataGenerator.GenerateSomeDataSimple(10);
             KeyValuePair<Client, Account> firstElement = testData.FirstOrDefault();
 
             Client clientFromTestData = firstElement.Key;
@@ -29,9 +29,9 @@ namespace BancSystem.App.Tests
         }
 
         [Fact]
-        public void GetHashCodeNecessityPositivTest_AccountArray()
+        public void GetHashCodeNecessityPositivTestAccountArray()
         {
-            Dictionary<Client, Account[]> testData = TestDataGenerator.GenerateSomeData_Array(10);
+            Dictionary<Client, Account[]> testData = TestDataGenerator.GenerateSomeDataArray(10);
             KeyValuePair<Client, Account[]> firstElement = testData.FirstOrDefault();
 
             Client clientFromTestData = firstElement.Key;
@@ -61,9 +61,9 @@ namespace BancSystem.App.Tests
                 Salary = lastEmployee.Salary
             };
 
-            Employee employeeFind = employees.First(e => e == newClient);
+            Employee? employeeFind = employees.FirstOrDefault(e => e == newClient);
 
-            Assert.Equal(employeeFind, lastEmployee);
+            Assert.False(lastEmployee.Equals(employeeFind));
         }
 
 
