@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Domain.Models
 {
-    public class Client : Person
+    public class Account
     {
-        
+        public Currency Currency { get; set; }
+        public int Amount { get; set; }
     }
 }
