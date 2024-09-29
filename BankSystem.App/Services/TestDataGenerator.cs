@@ -54,7 +54,7 @@ namespace BankSystem.App.Services
             return faker.Generate(countElements);
         }
 
-        public static Dictionary<Client, Account> GenerateSomeData_Simple(int countElements)
+        public static Dictionary<Client, Account> GenerateSomeDataSimple(int countElements)
         {
             Dictionary<Client, Account> resultDictionary = new Dictionary<Client, Account>();
             List<Client> randomClients = GenerateClientList(countElements);
@@ -72,7 +72,7 @@ namespace BankSystem.App.Services
             return resultDictionary;
         }
 
-        public static Dictionary<Client, Account[]> GenerateSomeData_Array(int countElements)
+        public static Dictionary<Client, Account[]> GenerateSomeDataArray(int countElements)
         {
             Dictionary<Client, Account[]> resultDictionary = new Dictionary<Client, Account[]>();
             List<Client> randomClients = GenerateClientList(countElements);
