@@ -8,13 +8,13 @@ using BankSystem.Domain.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorage
+    public class EmployeeStorage
     {
-        public readonly List<Client> collection = new List<Client>();
+        public readonly List<Employee> collection = new List<Employee>();
 
-        public void Add(Client client)
+        public void Add(Employee employee)
         {
-            collection.Add(client);
+            collection.Add(employee);
         }
     }
 }
