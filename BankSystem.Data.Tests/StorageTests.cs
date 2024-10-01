@@ -22,13 +22,13 @@ namespace BankSystem.Data.Tests
             }
 
 
-            Client mostYoungClient = clientStorage.collection.OrderBy(c => c.Birthday).First();
-            Client mostOldClient = clientStorage.collection.OrderBy(c => c.Birthday).Last();
+            Client mostYoungClient = clientStorage.OrderByBirthday().First();
+            Client mostOldClient    = clientStorage.OrderByBirthday().Last();
 
             int allYears = 0;
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-            foreach (Client client in clientStorage.collection)
+            foreach (Client client in clientStorage.ToList())
             {
                 int years = today.Year - client.Birthday.Year;
                 if (today.Month < client.Birthday.Month && today.Day < client.Birthday.Day)
@@ -37,10 +37,10 @@ namespace BankSystem.Data.Tests
                 allYears += years;
             }
 
-            int countClients = clientStorage.collection.Count();
-            int middleAge = countClients > 0 ? countClients : 0;
+            int countClients = clientStorage.Count();
+            int middleAge = allYears / (countClients > 0 ? countClients : 0);
         }
-        
+
         [Fact]
         public void EmployeeStorageTest()
         {
@@ -53,13 +53,13 @@ namespace BankSystem.Data.Tests
             }
 
 
-            Employee mostYoungEmployee = employeeStorage.collection.OrderBy(c => c.Birthday).First();
-            Employee mostOldEmployee   = employeeStorage.collection.OrderBy(c => c.Birthday).Last();
+            Employee mostYoungEmployee = employeeStorage.OrderByBirthday().First();
+            Employee mostOldEmployee   = employeeStorage.OrderByBirthday().Last();
 
             int allYears = 0;
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-            foreach (Employee client in employeeStorage.collection)
+            foreach (Employee client in employeeStorage.ToList())
             {
                 int years = today.Year - client.Birthday.Year;
                 if (today.Month < client.Birthday.Month && today.Day < client.Birthday.Day)
@@ -68,8 +68,8 @@ namespace BankSystem.Data.Tests
                 allYears += years;
             }
 
-            int countClients = employeeStorage.collection.Count();
-            int middleAge = countClients > 0 ? countClients : 0;
+            int countClients = employeeStorage.Count();
+            int middleAge = allYears / (countClients > 0 ? countClients : 0);
         }
     }
 }

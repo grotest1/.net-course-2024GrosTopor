@@ -12,7 +12,6 @@ namespace BankSystem.Domain.Models
         public string Name { get; set; } = "";
         public DateOnly Birthday { get; set; }
         public string PersonalPhoneNumber { get; set; } = "";
-
         public override bool Equals(object? obj)
         {
             if (obj is Person person)
