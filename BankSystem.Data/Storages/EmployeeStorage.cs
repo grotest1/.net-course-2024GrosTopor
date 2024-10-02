@@ -13,12 +13,36 @@ namespace BankSystem.Data.Storages
     {
         private readonly List<Employee> _collection = [];
 
-        public void Add(Employee employee) => _collection.Add(employee);
+        public void AddRange(IEnumerable<Employee> collection) => _collection.AddRange(collection);
 
-        public IOrderedEnumerable<Employee> OrderByBirthday() => _collection.OrderBy(c => c.Birthday);
+        public Employee MostYoungEmployee()
+        {
+            return _collection.OrderByDescending(c => c.Birthday).First();
+        }
+
+        public Employee MostOldEmployee()
+        {
+            return _collection.OrderBy(c => c.Birthday).First();
+        }
+
+        public int MiddleAge()
+        {
+            int allYears = 0;
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+
+            foreach (Employee employee in _collection)
+            {
+                int years = today.Year - employee.Birthday.Year;
+                if (today.Month < employee.Birthday.Month && today.Day < employee.Birthday.Day)
+                    years--;
+
+                allYears += years;
+            }
+
+            int countEmployees = _collection.Count;
+            return allYears / (countEmployees > 0 ? countEmployees : 0);
+        }
 
         public int Count() => _collection.Count;
-
-        public List<Employee> ToList() => [.. _collection];
     }
 }
