@@ -15,14 +15,16 @@ namespace BankSystem.Data.Storages
 
         public void AddRange(IEnumerable<Employee> collection) => _collection.AddRange(collection);
 
-        public Employee MostYoungEmployee()
+        public Employee? FirstOrderBy<TKey>(Func<Employee, TKey> keySelector, bool Descending = false)
         {
-            return _collection.OrderByDescending(c => c.Birthday).First();
-        }
-
-        public Employee MostOldEmployee()
-        {
-            return _collection.OrderBy(c => c.Birthday).First();
+            if (Descending)
+            {
+                return _collection.OrderByDescending(keySelector).FirstOrDefault();
+            }
+            else
+            {
+                return _collection.OrderBy(keySelector).FirstOrDefault();
+            }
         }
 
         public int MiddleAge()

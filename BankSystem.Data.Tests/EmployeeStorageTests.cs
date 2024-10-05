@@ -36,7 +36,7 @@ namespace BankSystem.Data.Tests
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee mostYouongEmployee = employeeStorage.MostYoungEmployee();
+            Employee? mostYouongEmployee = employeeStorage.FirstOrderBy(e => e.Birthday, true);
 
             Assert.Equal(employees[3], mostYouongEmployee);
         }
@@ -56,7 +56,7 @@ namespace BankSystem.Data.Tests
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee mostOldEmployee = employeeStorage.MostOldEmployee();
+            Employee? mostOldEmployee = employeeStorage.FirstOrderBy(e => e.Birthday);
 
             Assert.Equal(employees[1], mostOldEmployee);
         }
