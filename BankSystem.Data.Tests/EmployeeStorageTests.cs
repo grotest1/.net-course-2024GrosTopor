@@ -27,16 +27,16 @@ namespace BankSystem.Data.Tests
         {
             Employee[] employees =
             {
-                new Employee {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) },
-                new Employee {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) },
-                new Employee {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) },
-                new Employee {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
-                new Employee {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
+                new Employee {Name = "Мылинов", Age = 15 },
+                new Employee {Name = "Сидоров", Age = 39 },
+                new Employee {Name = "Зукобин", Age = 19 },
+                new Employee {Name = "Иванов",  Age = 11 },
+                new Employee {Name = "Пучкова", Age = 22 }
             };
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee? mostYouongEmployee = employeeStorage.FirstOrderBy(e => e.Birthday, true);
+            Employee? mostYouongEmployee = employeeStorage.FirstOrderBy(e => e.Age);
 
             Assert.Equal(employees[3], mostYouongEmployee);
         }
@@ -47,38 +47,38 @@ namespace BankSystem.Data.Tests
         {
             Employee[] employees =
             {
-                new Employee {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) },
-                new Employee {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) },
-                new Employee {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) },
-                new Employee {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
-                new Employee {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
+                new Employee {Name = "Мылинов", Age = 15 },
+                new Employee {Name = "Сидоров", Age = 39 },
+                new Employee {Name = "Зукобин", Age = 19 },
+                new Employee {Name = "Иванов",  Age = 11 },
+                new Employee {Name = "Пучкова", Age = 22 }
             };
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee? mostOldEmployee = employeeStorage.FirstOrderBy(e => e.Birthday);
+            Employee? mostOldEmployee = employeeStorage.FirstOrderBy(e => e.Age, true);
 
             Assert.Equal(employees[1], mostOldEmployee);
         }
 
 
         [Fact]
-        public void MiddleAge5EmployeesEq19()
+        public void MiddleAge5EmployeesEq21()
         {
             Employee[] employees =
             {
-                new Employee {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) },
-                new Employee {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) },
-                new Employee {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) },
-                new Employee {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
-                new Employee {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
+                new Employee {Name = "Мылинов", Age = 15 },
+                new Employee {Name = "Сидоров", Age = 39 },
+                new Employee {Name = "Зукобин", Age = 19 },
+                new Employee {Name = "Иванов",  Age = 11 },
+                new Employee {Name = "Пучкова", Age = 22 }
             };
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
             int middleAge = employeeStorage.MiddleAge();
 
-            Assert.Equal(19, middleAge);
+            Assert.Equal(21, middleAge);
         }
     }
 }

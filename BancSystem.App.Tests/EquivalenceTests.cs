@@ -19,7 +19,7 @@ namespace BancSystem.App.Tests
             Client newClient = new Client
             {
                 Name = clientFromTestData.Name,
-                Birthday = clientFromTestData.Birthday,
+                Age = clientFromTestData.Age,
                 PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
             };
 
@@ -38,7 +38,7 @@ namespace BancSystem.App.Tests
             Client newClient = new Client
             {
                 Name = clientFromTestData.Name,
-                Birthday = clientFromTestData.Birthday,
+                Age = clientFromTestData.Age,
                 PersonalPhoneNumber = clientFromTestData.PersonalPhoneNumber
             };
 
@@ -55,7 +55,7 @@ namespace BancSystem.App.Tests
             Employee newClient = new Employee
             {
                 Name = lastEmployee.Name,
-                Birthday = lastEmployee.Birthday,
+                Age = lastEmployee.Age,
                 PersonalPhoneNumber = lastEmployee.PersonalPhoneNumber,
                 Contract = lastEmployee.Contract,
                 Salary = lastEmployee.Salary

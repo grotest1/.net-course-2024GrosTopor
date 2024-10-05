@@ -29,20 +29,8 @@ namespace BankSystem.Data.Storages
 
         public int MiddleAge()
         {
-            int allYears = 0;
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-
-            foreach (Employee employee in _collection)
-            {
-                int years = today.Year - employee.Birthday.Year;
-                if (today.Month < employee.Birthday.Month && today.Day < employee.Birthday.Day)
-                    years--;
-
-                allYears += years;
-            }
-
-            int countEmployees = _collection.Count;
-            return allYears / (countEmployees > 0 ? countEmployees : 0);
+            int countClients = _collection.Count;
+            return _collection.Sum(c => c.Age) / (countClients > 0 ? countClients : 0);
         }
 
         public int Count() => _collection.Count;

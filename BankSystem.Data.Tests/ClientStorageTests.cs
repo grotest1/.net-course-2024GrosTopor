@@ -27,11 +27,11 @@ namespace BankSystem.Data.Tests
         {
             Client[] clients =
             {
-                new Client {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) },
-                new Client {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) },
-                new Client {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) },
-                new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
-                new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
+                new Client {Name = "Мылинов", Age = 15 },
+                new Client {Name = "Сидоров", Age = 39 },
+                new Client {Name = "Зукобин", Age = 19 },
+                new Client {Name = "Иванов",  Age = 11 },
+                new Client {Name = "Пучкова", Age = 22 }
             };
             Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" }};
 
@@ -40,7 +40,7 @@ namespace BankSystem.Data.Tests
                 clientStorage.Add(client, [defaultAccount]);
 
 
-            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Birthday, true);
+            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Age);
 
             Assert.Equal(clients[3], mostYouongClient);
         }
@@ -50,11 +50,11 @@ namespace BankSystem.Data.Tests
         {
             Client[] clients =
             {
-                new Client {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) },
-                new Client {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) },
-                new Client {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) },
-                new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
-                new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
+                new Client {Name = "Мылинов", Age = 15 },
+                new Client {Name = "Сидоров", Age = 39 },
+                new Client {Name = "Зукобин", Age = 19 },
+                new Client {Name = "Иванов",  Age = 11 },
+                new Client {Name = "Пучкова", Age = 22 }
             };
             Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" } };
 
@@ -63,22 +63,22 @@ namespace BankSystem.Data.Tests
                 clientStorage.Add(client, [defaultAccount]);
 
 
-            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Birthday);
+            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Age, true);
 
             Assert.Equal(clients[1], mostYouongClient);
         }
 
 
         [Fact]
-        public void MiddleAge5ClientsEq19()
+        public void MiddleAge5ClientsEq21()
         {
             Client[] clients =
             {
-                new Client {Name = "Мылинов", Birthday = new DateOnly(2003, 04, 05) }, //21
-                new Client {Name = "Сидоров", Birthday = new DateOnly(1990, 04, 05) }, //34
-                new Client {Name = "Зукобин", Birthday = new DateOnly(2010, 04, 05) }, //14
-                new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) }, //4
-                new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }  //24
+                new Client {Name = "Мылинов", Age = 15 },
+                new Client {Name = "Сидоров", Age = 39 },
+                new Client {Name = "Зукобин", Age = 19 },
+                new Client {Name = "Иванов",  Age = 11 },
+                new Client {Name = "Пучкова", Age = 22 }
             };
             Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" } };
 
@@ -88,7 +88,7 @@ namespace BankSystem.Data.Tests
 
             int middleAge = clientStorage.MiddleAge();
 
-            Assert.Equal(19, middleAge);
+            Assert.Equal(21, middleAge);
         }
     }
 }
