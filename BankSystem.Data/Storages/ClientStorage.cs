@@ -11,26 +11,29 @@ namespace BankSystem.Data.Storages
 {
     public class ClientStorage
     {
-        private readonly List<Client> _collection = [];
+        private readonly Dictionary<Client, List<Account>> _collection = [];
 
-        public void AddRange(IEnumerable<Client> collection) => _collection.AddRange(collection);
+        public void Add(Client client, List<Account> accounts) => _collection.Add(client, accounts);
 
-        public Client MostYoungClient()
+        public Client? FirstOrderBy<TKey>(Func<Client, TKey> keySelector, bool Descending = false)
         {
-            return _collection.OrderByDescending(c => c.Birthday).First();
+            if (Descending)
+            {
+                return _collection.Keys.OrderByDescending(keySelector).FirstOrDefault();
+            }
+            else
+            {
+                return _collection.Keys.OrderBy(keySelector).FirstOrDefault();
+            }
         }
 
-        public Client MostOldClient()
-        {
-            return _collection.OrderBy(c => c.Birthday).First();
-        }
 
         public int MiddleAge()
         {
             int allYears = 0;
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
 
-            foreach (Client client in _collection)
+            foreach (Client client in _collection.Keys)
             {
                 int years = today.Year - client.Birthday.Year;
                 if (today.Month < client.Birthday.Month && today.Day < client.Birthday.Day)

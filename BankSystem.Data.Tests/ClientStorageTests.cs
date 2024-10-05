@@ -10,15 +10,16 @@ namespace BankSystem.Data.Tests
     public class ClientStorageTests
     {
         [Fact]
-        public void AddRangeAndCount5000Clients()
+        public void AddAndCountClients()
         {
-            List<Client> clients = TestDataGenerator.GenerateClientList(5000);
             ClientStorage clientStorage = new ClientStorage();
 
-            clientStorage.AddRange(clients);
-            int count = clientStorage.Count();
+            int countBefore = clientStorage.Count();
+            clientStorage.Add(new Client { Name = "Ионел" }, new List<Account> { new Account { Amount = 555, Currency = new Currency { Name = "руб"} } });
+            int countAfter = clientStorage.Count();
 
-            Assert.Equal(5000, count);
+            Assert.Equal(0, countBefore);
+            Assert.Equal(1, countAfter);
         }
 
         [Fact]
@@ -32,10 +33,14 @@ namespace BankSystem.Data.Tests
                 new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
                 new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
             };
-            ClientStorage clientStorage = new ClientStorage();
-            clientStorage.AddRange(clients);
+            Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" }};
 
-            Client mostYouongClient = clientStorage.MostYoungClient();
+            ClientStorage clientStorage = new ClientStorage();
+            foreach (Client client in clients) 
+                clientStorage.Add(client, [defaultAccount]);
+
+
+            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Birthday, true);
 
             Assert.Equal(clients[3], mostYouongClient);
         }
@@ -51,12 +56,16 @@ namespace BankSystem.Data.Tests
                 new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) },
                 new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }
             };
+            Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" } };
+
             ClientStorage clientStorage = new ClientStorage();
-            clientStorage.AddRange(clients);
+            foreach (Client client in clients)
+                clientStorage.Add(client, [defaultAccount]);
 
-            Client mostOldClient = clientStorage.MostOldClient();
 
-            Assert.Equal(clients[1], mostOldClient);
+            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Birthday);
+
+            Assert.Equal(clients[1], mostYouongClient);
         }
 
 
@@ -71,8 +80,11 @@ namespace BankSystem.Data.Tests
                 new Client {Name = "Иванов",  Birthday = new DateOnly(2020, 04, 05) }, //4
                 new Client {Name = "Пучкова", Birthday = new DateOnly(2000, 04, 05) }  //24
             };
+            Account defaultAccount = new Account() { Amount = 0, Currency = new Currency { Name = "руб" } };
+
             ClientStorage clientStorage = new ClientStorage();
-            clientStorage.AddRange(clients);
+            foreach (Client client in clients)
+                clientStorage.Add(client, [defaultAccount]);
 
             int middleAge = clientStorage.MiddleAge();
 
