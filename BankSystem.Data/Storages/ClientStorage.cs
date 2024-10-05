@@ -51,7 +51,7 @@ namespace BankSystem.Data.Storages
         }
         public List<Client> GetClients(Func<Client, bool> predicate)
         {
-            return (List<Client>)_collection.Keys.Where(predicate);
+            return _collection.Keys.Where(predicate).ToList();
         }
 
         public int Sum(Func<Client, int> selector)

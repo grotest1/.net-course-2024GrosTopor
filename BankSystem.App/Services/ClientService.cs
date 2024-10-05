@@ -12,8 +12,10 @@ namespace BankSystem.App.Services
     public class ClientService
     {
         private ClientStorage _clientStorage;
-        public ClientService() => _clientStorage = new ClientStorage();
-
+        public ClientService()
+        {
+            _clientStorage = new ClientStorage();
+        }
 
         public void AddClient(Client client)
         {
@@ -30,7 +32,6 @@ namespace BankSystem.App.Services
 
         public void AddAccount(Client client, Account account)
         {
-            
             if (_clientStorage.GetClient(c => c == client) == null)
                 throw new PersonException("Клиент не найден");
             else if (account.Currency.Code == 0 || account.Currency.Name == "")
@@ -46,6 +47,11 @@ namespace BankSystem.App.Services
                 throw new PersonException("Лицевой счет не принадлежит клиенту");
 
             _clientStorage.UpdateClientAccount(client, account, newAccountSum);
+        }
+
+        public Account? GetClientAccount(Client client, int idAccount)
+        {
+            return _clientStorage.GetAccounts(client).FirstOrDefault(a => a.Id == idAccount);
         }
 
         public Client? GetClientByName(string name)

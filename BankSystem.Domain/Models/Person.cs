@@ -33,7 +33,7 @@ namespace BankSystem.Domain.Models
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() + Age.GetHashCode() + PersonalPhoneNumber.GetHashCode() + Passport.GetHashCode();
+            return Name.GetHashCode() + Birthday.GetHashCode() + Age.GetHashCode() + PersonalPhoneNumber.GetHashCode() + Passport.GetHashCode();
         }
     }
 }
