@@ -40,7 +40,7 @@ namespace BankSystem.Data.Tests
                 clientStorage.Add(client, [defaultAccount]);
 
 
-            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Age);
+            Client? mostYouongClient = clientStorage.Min(e => e.Age);
 
             Assert.Equal(clients[3], mostYouongClient);
         }
@@ -63,7 +63,7 @@ namespace BankSystem.Data.Tests
                 clientStorage.Add(client, [defaultAccount]);
 
 
-            Client? mostYouongClient = clientStorage.FirstOrderBy(e => e.Age, true);
+            Client? mostYouongClient = clientStorage.Max(e => e.Age);
 
             Assert.Equal(clients[1], mostYouongClient);
         }
@@ -85,8 +85,11 @@ namespace BankSystem.Data.Tests
             ClientStorage clientStorage = new ClientStorage();
             foreach (Client client in clients)
                 clientStorage.Add(client, [defaultAccount]);
+            
 
-            int middleAge = clientStorage.MiddleAge();
+            int sumAges = clientStorage.Sum(c => c.Age);
+            int countClients = clientStorage.Count();
+            int middleAge = sumAges / (countClients > 0 ? countClients : 0);
 
             Assert.Equal(21, middleAge);
         }

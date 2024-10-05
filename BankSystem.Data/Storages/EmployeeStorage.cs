@@ -13,26 +13,35 @@ namespace BankSystem.Data.Storages
     {
         private readonly List<Employee> _collection = [];
 
-        public void AddRange(IEnumerable<Employee> collection) => _collection.AddRange(collection);
-
-        public Employee? FirstOrderBy<TKey>(Func<Employee, TKey> keySelector, bool Descending = false)
+        public void Add(Employee employee)
         {
-            if (Descending)
-            {
-                return _collection.OrderByDescending(keySelector).FirstOrDefault();
-            }
-            else
-            {
-                return _collection.OrderBy(keySelector).FirstOrDefault();
-            }
+            _collection.Add(employee);
+        }
+        public void AddRange(IEnumerable<Employee> collection)
+        {
+            _collection.AddRange(collection);
         }
 
-        public int MiddleAge()
+        public Employee Min<TKey>(Func<Employee, TKey> keySelector)
         {
-            int countClients = _collection.Count;
-            return _collection.Sum(c => c.Age) / (countClients > 0 ? countClients : 0);
+              return _collection.OrderBy(keySelector).First();
         }
 
+        public Employee Max<TKey>(Func<Employee, TKey> keySelector)
+        {
+            return _collection.OrderByDescending(keySelector).First();
+        }
+
+        public Employee? GetEmployee(Func<Employee, bool> predicate)
+        {
+            return _collection.Where(predicate).FirstOrDefault();
+        }
+
+        public int Sum(Func<Employee, int> selector)
+        {
+            return _collection.Sum(selector);
+        }
         public int Count() => _collection.Count;
+
     }
 }

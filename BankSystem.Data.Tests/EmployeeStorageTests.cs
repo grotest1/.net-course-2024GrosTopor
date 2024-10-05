@@ -36,7 +36,7 @@ namespace BankSystem.Data.Tests
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee? mostYouongEmployee = employeeStorage.FirstOrderBy(e => e.Age);
+            Employee? mostYouongEmployee = employeeStorage.Min(e => e.Age);
 
             Assert.Equal(employees[3], mostYouongEmployee);
         }
@@ -56,7 +56,7 @@ namespace BankSystem.Data.Tests
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            Employee? mostOldEmployee = employeeStorage.FirstOrderBy(e => e.Age, true);
+            Employee? mostOldEmployee = employeeStorage.Max(e => e.Age);
 
             Assert.Equal(employees[1], mostOldEmployee);
         }
@@ -76,7 +76,9 @@ namespace BankSystem.Data.Tests
             EmployeeStorage employeeStorage = new EmployeeStorage();
             employeeStorage.AddRange(employees);
 
-            int middleAge = employeeStorage.MiddleAge();
+            int sumAges = employeeStorage.Sum(c => c.Age);
+            int countClients = employeeStorage.Count();
+            int middleAge = sumAges / (countClients > 0 ? countClients : 0);
 
             Assert.Equal(21, middleAge);
         }

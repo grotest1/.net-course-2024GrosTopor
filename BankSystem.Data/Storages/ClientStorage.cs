@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +16,47 @@ namespace BankSystem.Data.Storages
 
         public void Add(Client client, List<Account> accounts) => _collection.Add(client, accounts);
 
-        public Client? FirstOrderBy<TKey>(Func<Client, TKey> keySelector, bool Descending = false)
+        public Client Min<TKey>(Func<Client, TKey> keySelector)
         {
-            if (Descending)
+            return _collection.Keys.OrderBy(keySelector).First();
+        }
+
+        public Client Max<TKey>(Func<Client, TKey> keySelector)
+        {
+            return _collection.Keys.OrderByDescending(keySelector).First();
+        }
+
+        public void AddClientAccount(Client client, Account account)
+        {
+            _collection[client].Add(account);
+        }
+
+        public void UpdateClientAccount(Client client, Account account, int newAccountSum)
+        {
+            Account? findAccount = _collection[client].Find(a => a == account);
+            if (findAccount != null)
             {
-                return _collection.Keys.OrderByDescending(keySelector).FirstOrDefault();
-            }
-            else
-            {
-                return _collection.Keys.OrderBy(keySelector).FirstOrDefault();
+                findAccount.Amount = newAccountSum;
             }
         }
 
-
-        public int MiddleAge()
+        public List<Account> GetAccounts(Client client)
         {
-            int countClients = _collection.Count;
-            return _collection.Keys.Sum(c => c.Age) / (countClients > 0 ? countClients : 0);
+            return _collection[client];
+        }
+
+        public Client? GetClient(Func<Client, bool> predicate)
+        {
+            return _collection.Keys.Where(predicate).FirstOrDefault();
+        }
+        public List<Client> GetClients(Func<Client, bool> predicate)
+        {
+            return (List<Client>)_collection.Keys.Where(predicate);
+        }
+
+        public int Sum(Func<Client, int> selector)
+        {
+            return _collection.Keys.Sum(selector);
         }
 
         public int Count() => _collection.Count;
