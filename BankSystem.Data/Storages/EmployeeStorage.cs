@@ -36,12 +36,15 @@ namespace BankSystem.Data.Storages
         {
             return _collection.Where(predicate).FirstOrDefault();
         }
+        public List<Employee> GetEmployees(Func<Employee, bool> predicate)
+        {
+            return _collection.Where(predicate).ToList();
+        }
 
         public int Sum(Func<Employee, int> selector)
         {
             return _collection.Sum(selector);
         }
         public int Count() => _collection.Count;
-
     }
 }

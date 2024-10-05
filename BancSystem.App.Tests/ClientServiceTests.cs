@@ -165,7 +165,5 @@ namespace BancSystem.App.Tests
             Assert.Equal(1, clients?.Count);
             Assert.Equal(client2, clients?[0]);
         }
-
-
     }
 }
