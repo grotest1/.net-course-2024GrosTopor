@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BankSystem.App.Exceptions
 {
-    public class PersonException : ArgumentException
+    public class MissingDataException : Exception
     {
-        public PersonException(string message) : base(message)
+        public MissingDataException(string message) : base(message)
         {
         }
     }
-
 }

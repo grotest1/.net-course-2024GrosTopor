@@ -30,7 +30,7 @@ namespace BancSystem.App.Tests
         {
             EmployeeService employeeService = new EmployeeService();
 
-            Assert.Throws<PersonException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
+            Assert.Throws<UnderAgeException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace BancSystem.App.Tests
         {
             EmployeeService employeeService = new EmployeeService();
 
-            Assert.Throws<PersonException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "", Age = 35 }));
+            Assert.Throws<EmptyRequiredDataException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "", Age = 35 }));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace BancSystem.App.Tests
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeeByName(employee.Name);
+            Employee? findEmployee = employeeService.GetEmployee(c => c.Name == employee.Name);
 
             Assert.Equal(employee, findEmployee);
         }
@@ -60,7 +60,7 @@ namespace BancSystem.App.Tests
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeeByPhone(employee.PersonalPhoneNumber);
+            Employee? findEmployee = employeeService.GetEmployee(c => c.PersonalPhoneNumber == employee.PersonalPhoneNumber);
 
             Assert.Equal(employee, findEmployee);
         }
@@ -72,7 +72,7 @@ namespace BancSystem.App.Tests
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeeByPassport(employee.Passport);
+            Employee? findEmployee = employeeService.GetEmployee(c => c.Passport == employee.Passport);
 
             Assert.Equal(employee, findEmployee);
         }
@@ -88,7 +88,7 @@ namespace BancSystem.App.Tests
             Employee employee3 = new Employee() { Name = "Ричард3", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1995, 05, 19) };
             employeeService.AddEmployee(employee3);
 
-            List<Employee> employees = employeeService.GetEmployeesByBirthdayRange(new DateOnly(2019, 1, 1), new DateOnly(2022, 1, 1));
+            List<Employee> employees = employeeService.GetEmployees(c => c.Birthday >= new DateOnly(2019, 1, 1) && c.Birthday <= new DateOnly(2022, 1, 1));
             
             Assert.Equal(1, employees?.Count);
             Assert.Equal(employee2, employees?[0]);

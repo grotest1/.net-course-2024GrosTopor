@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using BankSystem.Domain.Models;
+﻿using BankSystem.Domain.Models;
 
 namespace BankSystem.Data.Storages
 {
@@ -40,9 +32,9 @@ namespace BankSystem.Data.Storages
             }
         }
 
-        public List<Account> GetAccounts(Client client)
+        public Account? GetClientAccount(Client client, int idAccount)
         {
-            return _collection[client];
+            return _collection[client].Find(a => a.Id == idAccount);
         }
 
         public Client? GetClient(Func<Client, bool> predicate)
