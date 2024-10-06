@@ -13,36 +13,38 @@ namespace BankSystem.Data.Storages
     {
         private readonly List<Employee> _collection = [];
 
-        public void AddRange(IEnumerable<Employee> collection) => _collection.AddRange(collection);
-
-        public Employee MostYoungEmployee()
+        public void Add(Employee employee)
         {
-            return _collection.OrderByDescending(c => c.Birthday).First();
+            _collection.Add(employee);
+        }
+        public void AddRange(IEnumerable<Employee> collection)
+        {
+            _collection.AddRange(collection);
         }
 
-        public Employee MostOldEmployee()
+        public Employee Min<TKey>(Func<Employee, TKey> keySelector)
         {
-            return _collection.OrderBy(c => c.Birthday).First();
+              return _collection.OrderBy(keySelector).First();
         }
 
-        public int MiddleAge()
+        public Employee Max<TKey>(Func<Employee, TKey> keySelector)
         {
-            int allYears = 0;
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-
-            foreach (Employee employee in _collection)
-            {
-                int years = today.Year - employee.Birthday.Year;
-                if (today.Month < employee.Birthday.Month && today.Day < employee.Birthday.Day)
-                    years--;
-
-                allYears += years;
-            }
-
-            int countEmployees = _collection.Count;
-            return allYears / (countEmployees > 0 ? countEmployees : 0);
+            return _collection.OrderByDescending(keySelector).First();
         }
 
+        public Employee? GetEmployee(Func<Employee, bool> predicate)
+        {
+            return _collection.Where(predicate).FirstOrDefault();
+        }
+        public List<Employee> GetEmployees(Func<Employee, bool> predicate)
+        {
+            return _collection.Where(predicate).ToList();
+        }
+
+        public int Sum(Func<Employee, int> selector)
+        {
+            return _collection.Sum(selector);
+        }
         public int Count() => _collection.Count;
     }
 }

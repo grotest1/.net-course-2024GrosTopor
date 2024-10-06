@@ -14,7 +14,7 @@ namespace BankSystem.App.Services
         {
             var faker = new Faker<Client>("ru")
                .RuleFor(p => p.Name, f => f.Name.FirstName())
-               .RuleFor(p => p.Birthday, f => f.Date.BetweenDateOnly(new DateOnly(1950, 1, 1), new DateOnly(2020, 1, 1)))
+               .RuleFor(p => p.Age, f => f.Random.Int(1, 120))
                .RuleFor(p => p.PersonalPhoneNumber, f => f.Phone.PhoneNumber("########"));
 
             return faker.Generate(countElements);
@@ -47,7 +47,7 @@ namespace BankSystem.App.Services
         {
             var faker = new Faker<Employee>("ru")
                .RuleFor(p => p.Name, f => f.Name.FirstName())
-               .RuleFor(p => p.Birthday, f => f.Date.BetweenDateOnly(new DateOnly(1950, 1, 1), new DateOnly(2020, 1, 1)))
+               .RuleFor(p => p.Age, f => f.Random.Int(1, 120))
                .RuleFor(p => p.PersonalPhoneNumber, f => f.Phone.PhoneNumber("########"))
                .RuleFor(p => p.Salary, f => f.Random.Int(100, 10000));
 

@@ -11,14 +11,19 @@ namespace BankSystem.Domain.Models
     {
         public string Name { get; set; } = "";
         public DateOnly Birthday { get; set; }
+        public int Age { get; set; }
         public string PersonalPhoneNumber { get; set; } = "";
+        public string Passport { get; set; } = "";
+
+
         public override bool Equals(object? obj)
         {
             if (obj is Person person)
             {
                 return Name == person.Name
-                    && Birthday == person.Birthday
-                    && PersonalPhoneNumber == person.PersonalPhoneNumber;
+                    && Age == person.Age
+                    && PersonalPhoneNumber == person.PersonalPhoneNumber
+                    && Passport == person.Passport;
             }
             else
             {
@@ -28,7 +33,7 @@ namespace BankSystem.Domain.Models
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() + Birthday.GetHashCode() + PersonalPhoneNumber.GetHashCode();
+            return Name.GetHashCode() + Birthday.GetHashCode() + Age.GetHashCode() + PersonalPhoneNumber.GetHashCode() + Passport.GetHashCode();
         }
     }
 }

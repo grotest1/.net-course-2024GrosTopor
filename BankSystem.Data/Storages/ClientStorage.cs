@@ -1,46 +1,54 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using BankSystem.Domain.Models;
+﻿using BankSystem.Domain.Models;
 
 namespace BankSystem.Data.Storages
 {
     public class ClientStorage
     {
-        private readonly List<Client> _collection = [];
+        private readonly Dictionary<Client, List<Account>> _collection = [];
 
-        public void AddRange(IEnumerable<Client> collection) => _collection.AddRange(collection);
+        public void Add(Client client, List<Account> accounts) => _collection.Add(client, accounts);
 
-        public Client MostYoungClient()
+        public Client Min<TKey>(Func<Client, TKey> keySelector)
         {
-            return _collection.OrderByDescending(c => c.Birthday).First();
+            return _collection.Keys.OrderBy(keySelector).First();
         }
 
-        public Client MostOldClient()
+        public Client Max<TKey>(Func<Client, TKey> keySelector)
         {
-            return _collection.OrderBy(c => c.Birthday).First();
+            return _collection.Keys.OrderByDescending(keySelector).First();
         }
 
-        public int MiddleAge()
+        public void AddClientAccount(Client client, Account account)
         {
-            int allYears = 0;
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            _collection[client].Add(account);
+        }
 
-            foreach (Client client in _collection)
+        public void UpdateClientAccount(Client client, Account account, int newAccountSum)
+        {
+            Account? findAccount = _collection[client].Find(a => a == account);
+            if (findAccount != null)
             {
-                int years = today.Year - client.Birthday.Year;
-                if (today.Month < client.Birthday.Month && today.Day < client.Birthday.Day)
-                    years--;
-
-                allYears += years;
+                findAccount.Amount = newAccountSum;
             }
+        }
 
-            int countClients = _collection.Count;
-            return allYears / (countClients > 0 ? countClients : 0);
+        public Account? GetClientAccount(Client client, int idAccount)
+        {
+            return _collection[client].Find(a => a.Id == idAccount);
+        }
+
+        public Client? GetClient(Func<Client, bool> predicate)
+        {
+            return _collection.Keys.Where(predicate).FirstOrDefault();
+        }
+        public List<Client> GetClients(Func<Client, bool> predicate)
+        {
+            return _collection.Keys.Where(predicate).ToList();
+        }
+
+        public int Sum(Func<Client, int> selector)
+        {
+            return _collection.Keys.Sum(selector);
         }
 
         public int Count() => _collection.Count;
