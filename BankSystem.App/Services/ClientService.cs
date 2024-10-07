@@ -12,9 +12,9 @@ namespace BankSystem.App.Services
     public class ClientService
     {
         private IClientStorage _clientStorage;
-        public ClientService()
+        public ClientService(IClientStorage clientStorage)
         {
-            _clientStorage = new ClientStorage();
+            _clientStorage = clientStorage;
         }
 
         public void AddClient(Client client)
