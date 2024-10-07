@@ -11,7 +11,7 @@ namespace BankSystem.App.Services
 {
     public class ClientService
     {
-        private ClientStorage _clientStorage;
+        private IClientStorage _clientStorage;
         public ClientService()
         {
             _clientStorage = new ClientStorage();

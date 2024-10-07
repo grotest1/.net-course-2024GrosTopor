@@ -2,8 +2,11 @@
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorage
+    public class ClientStorage : IClientStorage
     {
+        public Dictionary<Client, List<Account>> Data => throw new NotImplementedException();
+        
+        
         private readonly Dictionary<Client, List<Account>> _collection = [];
 
         public void Add(Client client, List<Account> accounts) => _collection.Add(client, accounts);
@@ -52,5 +55,8 @@ namespace BankSystem.Data.Storages
         }
 
         public int Count() => _collection.Count;
+
+        
+
     }
 }
