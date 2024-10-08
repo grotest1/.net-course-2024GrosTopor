@@ -7,6 +7,7 @@ using BankSystem.App.Services;
 using Xunit;
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
+using BankSystem.Data.Storages;
 
 namespace BancSystem.App.Tests
 {
@@ -15,6 +16,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddClientPositivTest()
         {
+            
             ClientService clientService = new ClientService();
 
             int countBefore = clientService.GetClientsCount();

@@ -9,15 +9,11 @@ namespace BankSystem.Data.Storages
 {
     public interface IClientStorage : IStorage<Client>
     {
+        public void AddAccount(Client client, Account account);
+        public void UpdateAccount(Client client, Account account);
+        public void DeleteAccount(Client client, Account account);
+        public List<Account> GetAccount(Client client, Func<Account, bool> filter);
 
-        public void Add() { }
-        public void Update() { }
-        public void Delete() { }
-        
-        public void AddAccount() { }
-        public void UpdateAccount() { }
-        public void DeleteAccount() { }
-
-        Dictionary<Client, List<Account>> Data { get; }
+        //Dictionary<Client, List<Account>> Data { get; }
     }
 }
