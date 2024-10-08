@@ -36,13 +36,9 @@ namespace BankSystem.App.Services
             return _clientStorage.Get(predicate);
         }
 
-        //public Client? GetClient(Func<Client, bool> predicate)
-        //{
-        //    return _clientStorage.GetClient(predicate);
-        //}
-
         public void AddAccount(Client client, Account account)
         {
+
             if (_clientStorage.Get(c => c == client).Count == 0)
                 throw new MissingDataException("Клиент не найден");
             else if (account.Currency.Code == 0)
@@ -62,9 +58,11 @@ namespace BankSystem.App.Services
             _clientStorage.UpdateAccount(client, account);
         }
 
-        public Account? GetClientAccount(Client client, int idAccount)
+        public Account? GetClientAccount(int idClient, int idAccount)
         {
-            if (_clientStorage.Get(c => c == client).Count == 0)
+            Client? client = _clientStorage.Get(c => c.Id == idClient).FirstOrDefault();
+
+            if (client == null)
                 throw new MissingDataException("Клиент не найден");
 
             return _clientStorage.GetAccount(client, a => a.Id == idAccount).FirstOrDefault();

@@ -17,20 +17,19 @@ namespace BancSystem.App.Tests
         public void AddClientPositivTest()
         {
             
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
+            Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
 
-            int countBefore = clientService.GetClientsCount();
-            clientService.AddClient(new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
-            int countAfter = clientService.GetClientsCount();
+            clientService.AddClient(client);
+            int countAfter = clientService.GetClients(c => c == client).Count;
 
-            Assert.Equal(0, countBefore);
             Assert.Equal(1, countAfter);
         }
 
         [Fact]
         public void AddClientNegativeTestByAge()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
 
             Assert.Throws<UnderAgeException>(() => clientService.AddClient(new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
         }
@@ -38,7 +37,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddClientNegativeTestByPassword()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
 
             Assert.Throws<EmptyRequiredDataException>(() => clientService.AddClient(new Client() { Name = "Ричард", Passport = "", Age = 35 }));
         }
@@ -46,7 +45,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddAccountPositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
             Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики"} };
@@ -57,7 +56,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddAccountNegitivTestAnotherClient()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
 
             Client anotherClient = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
@@ -69,7 +68,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddAccountNegitivTestUncorrectCurrency()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
             Account account = new Account() { Amount = 159, Currency = new Currency()};
@@ -80,49 +79,50 @@ namespace BancSystem.App.Tests
         [Fact]
         public void UpdateAccountPositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account account     = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account accountNew  = new Account() { Id = 999, Amount = 500, Currency = new Currency() { Code = 501, Name = "фантики" } };
             clientService.AddAccount(client, account);
 
-            clientService.UpdateAccount(client, account, 500);
+            clientService.UpdateAccount(client, accountNew);
 
-            int? newAmount = clientService.GetClientAccount(client, account.Id)?.Amount;
+            int? newAmount = clientService.GetClientAccount(client.Id, account.Id)?.Amount;
             Assert.Equal(500, newAmount);
         }
 
         [Fact]
         public void UpdateAccountNegativeTestAnotherClient()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
             Account account = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
             clientService.AddAccount(client, account);
 
-            Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(new Client(), account, 500));
+            Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(new Client(), account));
         }
 
         [Fact]
         public void UpdateAccountNegativeTestAnotherAccount()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
             Account account = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
 
-            Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(client, account, 500));
+            Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(client, account));
         }
 
         [Fact]
         public void GetClientByNamePositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             clientService.AddClient(client);
 
-            Client? findClient = clientService.GetClient(c => c.Name == client.Name);
+            Client? findClient = clientService.GetClients(c => c.Name == client.Name).FirstOrDefault();
 
             Assert.Equal(client, findClient);
         }
@@ -130,11 +130,11 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetClientByPhonePositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             clientService.AddClient(client);
 
-            Client? findClient = clientService.GetClient(c => c.PersonalPhoneNumber == client.PersonalPhoneNumber);
+            Client? findClient = clientService.GetClients(c => c.PersonalPhoneNumber == client.PersonalPhoneNumber).FirstOrDefault();
             
             Assert.Equal(client, findClient);
         }
@@ -142,11 +142,11 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetClientByPassportPositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             clientService.AddClient(client);
 
-            Client? findClient = clientService.GetClient(c => c.Passport == client.Passport);
+            Client? findClient = clientService.GetClients(c => c.Passport == client.Passport).FirstOrDefault();
             
             Assert.Equal(client, findClient);
         }
@@ -154,7 +154,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetClientsByBirthdayRangePositivTest()
         {
-            ClientService clientService = new ClientService();
+            ClientService clientService = new ClientService(new ClientStorage());
             Client client1 = new Client() { Name = "Ричард1", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 22) };
             clientService.AddClient(client1);
             Client client2 = new Client() { Name = "Ричард2", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(2020, 01, 12) };
