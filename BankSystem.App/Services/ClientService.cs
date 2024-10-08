@@ -52,7 +52,7 @@ namespace BankSystem.App.Services
         {
             if (_clientStorage.Get(c => c == client).Count == 0)
                 throw new MissingDataException("Клиент не найден");
-            else if (_clientStorage.GetAccount(client, a => a == account).Count == 0)
+            else if (_clientStorage.GetAccount(client, a => a.Id == account.Id).Count == 0)
                 throw new MissingDataException("Лицевой счет не принадлежит клиенту");
 
             _clientStorage.UpdateAccount(client, account);

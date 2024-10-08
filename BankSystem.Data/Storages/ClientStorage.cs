@@ -7,8 +7,6 @@ namespace BankSystem.Data.Storages
 {
     public class ClientStorage : IClientStorage
     {
-        //public Dictionary<Client, List<Account>> Data => throw new NotImplementedException();
-
         private readonly Dictionary<Client, List<Account>> _collection = [];
 
         public void Add(Client item)

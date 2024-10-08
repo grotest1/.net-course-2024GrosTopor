@@ -12,75 +12,13 @@ namespace BankSystem.Data.Tests
         [Fact]
         public void AddRangeAndCount5000Clients()
         {
-            List<Employee> employees = TestDataGenerator.GenerateEmployeeList(5000);
             EmployeeStorage employeeStorage = new EmployeeStorage();
+                
+            employeeStorage.Add(new Employee() { Name = "Tom", Age = 30});
 
-            employeeStorage.AddRange(employees);
-            int count = employeeStorage.Count();
+            int count = employeeStorage.Get(e => true).Count();
 
-            Assert.Equal(5000, count);
-        }
-
-
-        [Fact]
-        public void MostYoungEmployeeEqIvanov()
-        {
-            Employee[] employees =
-            {
-                new Employee {Name = "Мылинов", Age = 15 },
-                new Employee {Name = "Сидоров", Age = 39 },
-                new Employee {Name = "Зукобин", Age = 19 },
-                new Employee {Name = "Иванов",  Age = 11 },
-                new Employee {Name = "Пучкова", Age = 22 }
-            };
-            EmployeeStorage employeeStorage = new EmployeeStorage();
-            employeeStorage.AddRange(employees);
-
-            Employee? mostYouongEmployee = employeeStorage.Min(e => e.Age);
-
-            Assert.Equal(employees[3], mostYouongEmployee);
-        }
-
-
-        [Fact]
-        public void MostOldEmployeeEqSidorov()
-        {
-            Employee[] employees =
-            {
-                new Employee {Name = "Мылинов", Age = 15 },
-                new Employee {Name = "Сидоров", Age = 39 },
-                new Employee {Name = "Зукобин", Age = 19 },
-                new Employee {Name = "Иванов",  Age = 11 },
-                new Employee {Name = "Пучкова", Age = 22 }
-            };
-            EmployeeStorage employeeStorage = new EmployeeStorage();
-            employeeStorage.AddRange(employees);
-
-            Employee? mostOldEmployee = employeeStorage.Max(e => e.Age);
-
-            Assert.Equal(employees[1], mostOldEmployee);
-        }
-
-
-        [Fact]
-        public void MiddleAge5EmployeesEq21()
-        {
-            Employee[] employees =
-            {
-                new Employee {Name = "Мылинов", Age = 15 },
-                new Employee {Name = "Сидоров", Age = 39 },
-                new Employee {Name = "Зукобин", Age = 19 },
-                new Employee {Name = "Иванов",  Age = 11 },
-                new Employee {Name = "Пучкова", Age = 22 }
-            };
-            EmployeeStorage employeeStorage = new EmployeeStorage();
-            employeeStorage.AddRange(employees);
-
-            int sumAges = employeeStorage.Sum(c => c.Age);
-            int countClients = employeeStorage.Count();
-            int middleAge = sumAges / (countClients > 0 ? countClients : 0);
-
-            Assert.Equal(21, middleAge);
+            Assert.Equal(1, count);
         }
     }
 }

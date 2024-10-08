@@ -18,7 +18,7 @@ namespace BancSystem.App.Tests
         {
             
             ClientService clientService = new ClientService(new ClientStorage());
-            Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
+            Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
 
             clientService.AddClient(client);
             int countAfter = clientService.GetClients(c => c == client).Count;

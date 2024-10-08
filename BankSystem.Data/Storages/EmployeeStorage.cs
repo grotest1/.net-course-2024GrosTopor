@@ -9,7 +9,7 @@ using BankSystem.Domain.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class EmployeeStorage
+    public class EmployeeStorage : IStorage<Employee>
     {
         private readonly List<Employee> _collection = [];
 
@@ -17,34 +17,30 @@ namespace BankSystem.Data.Storages
         {
             _collection.Add(employee);
         }
-        public void AddRange(IEnumerable<Employee> collection)
+
+        public void Update(Employee employee)
         {
-            _collection.AddRange(collection);
+            Employee? findEmployee = _collection.FirstOrDefault(c => c.Id == employee.Id);
+            if (findEmployee != null)
+            {
+                findEmployee.Age = employee.Age;
+                findEmployee.Name = employee.Name;
+                findEmployee.Passport = employee.Passport;
+                findEmployee.PersonalPhoneNumber = employee.PersonalPhoneNumber;
+            }
         }
 
-        public Employee Min<TKey>(Func<Employee, TKey> keySelector)
+        public void Delete(Employee employee)
         {
-              return _collection.OrderBy(keySelector).First();
+            Employee? findEmployee = _collection.FirstOrDefault(c => c.Id == employee.Id);
+            if (findEmployee != null)
+                _collection.Remove(findEmployee);
         }
 
-        public Employee Max<TKey>(Func<Employee, TKey> keySelector)
+        public List<Employee> Get(Func<Employee, bool> filter)
         {
-            return _collection.OrderByDescending(keySelector).First();
+            return _collection.Where(filter).ToList();
         }
 
-        public Employee? GetEmployee(Func<Employee, bool> predicate)
-        {
-            return _collection.Where(predicate).FirstOrDefault();
-        }
-        public List<Employee> GetEmployees(Func<Employee, bool> predicate)
-        {
-            return _collection.Where(predicate).ToList();
-        }
-
-        public int Sum(Func<Employee, int> selector)
-        {
-            return _collection.Sum(selector);
-        }
-        public int Count() => _collection.Count;
     }
 }

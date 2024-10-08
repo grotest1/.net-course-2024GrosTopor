@@ -7,6 +7,7 @@ using BankSystem.App.Services;
 using Xunit;
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
+using BankSystem.Data.Storages;
 
 namespace BancSystem.App.Tests
 {
@@ -15,20 +16,18 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddEmployeePositivTest()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
 
-            int countBefore = employeeService.GetEmployeesCount();
             employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
-            int countAfter = employeeService.GetEmployeesCount();
+            int count = employeeService.GetEmployees(e => true).Count();
 
-            Assert.Equal(0, countBefore);
-            Assert.Equal(1, countAfter);
+            Assert.Equal(1, count);
         }
 
         [Fact]
         public void AddEmployeeNegativeTestByAge()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
 
             Assert.Throws<UnderAgeException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
         }
@@ -36,7 +35,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void AddEmployeeNegativeTestByPassport()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
 
             Assert.Throws<EmptyRequiredDataException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "", Age = 35 }));
         }
@@ -44,11 +43,11 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetEmployeeByNamePositivTest()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployee(c => c.Name == employee.Name);
+            Employee? findEmployee = employeeService.GetEmployees(c => c.Name == employee.Name).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
@@ -56,11 +55,11 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetEmployeeByPhonePositivTest()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployee(c => c.PersonalPhoneNumber == employee.PersonalPhoneNumber);
+            Employee? findEmployee = employeeService.GetEmployees(c => c.PersonalPhoneNumber == employee.PersonalPhoneNumber).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
@@ -68,11 +67,11 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetEmployeeByPassportPositivTest()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
             employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployee(c => c.Passport == employee.Passport);
+            Employee? findEmployee = employeeService.GetEmployees(c => c.Passport == employee.Passport).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
@@ -80,7 +79,7 @@ namespace BancSystem.App.Tests
         [Fact]
         public void GetEmployeesByBirthdayRangePositivTest()
         {
-            EmployeeService employeeService = new EmployeeService();
+            EmployeeService employeeService = new EmployeeService(new EmployeeStorage());
             Employee employee1 = new Employee() { Name = "Ричард1", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 22) };
             employeeService.AddEmployee(employee1);
             Employee employee2 = new Employee() { Name = "Ричард2", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(2020, 01, 12) };
