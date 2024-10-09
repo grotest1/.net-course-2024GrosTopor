@@ -41,6 +41,5 @@ namespace BankSystem.Data.Storages
         {
             return _collection.Where(filter).ToList();
         }
-
     }
 }

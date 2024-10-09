@@ -16,7 +16,6 @@ namespace BankSystem.Domain.Models
         public string PersonalPhoneNumber { get; set; } = "";
         public string Passport { get; set; } = "";
 
-
         public override bool Equals(object? obj)
         {
             if (obj is Person person)

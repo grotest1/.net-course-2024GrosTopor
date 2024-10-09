@@ -13,7 +13,5 @@ namespace BankSystem.Data.Storages
         public void UpdateAccount(Client client, Account account);
         public void DeleteAccount(Client client, Account account);
         public List<Account> GetAccount(Client client, Func<Account, bool> filter);
-
-        //Dictionary<Client, List<Account>> Data { get; }
     }
 }

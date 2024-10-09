@@ -9,28 +9,26 @@ namespace BankSystem.Data.Storages
     {
         private readonly Dictionary<Client, List<Account>> _collection = [];
 
-        public void Add(Client item)
+        public void Add(Client client)
         {
-            _collection.Add(item, []);
+            _collection.Add(client, []);
         }
 
-        public void Update(Client item)
+        public void Update(Client client)
         {
-            Client? findClient = _collection.Keys.FirstOrDefault(c => c.Id == item.Id);
+            Client? findClient = _collection.Keys.FirstOrDefault(c => c.Id == client.Id);
             if (findClient != null)
             {
-                findClient.Age = item.Age;
-                findClient.Name = item.Name;
-                findClient.Passport = item.Passport;
-                findClient.PersonalPhoneNumber = item.PersonalPhoneNumber;
+                findClient.Age = client.Age;
+                findClient.Name = client.Name;
+                findClient.Passport = client.Passport;
+                findClient.PersonalPhoneNumber = client.PersonalPhoneNumber;
             }
         }
 
-        public void Delete(Client item)
+        public void Delete(Client client)
         {
-            Client? findClient = _collection.Keys.FirstOrDefault(c => c.Id == item.Id);
-            if (findClient != null)
-                _collection.Remove(findClient);
+            _collection.Remove(client);
         }
 
         public List<Client> Get(Func<Client, bool> filter)
@@ -38,8 +36,6 @@ namespace BankSystem.Data.Storages
             return _collection.Keys.Where(filter).ToList();
         }
 
-        //----------------------------
-        
         public void AddAccount(Client client, Account account)
         {
             _collection[client].Add(account);
@@ -54,52 +50,12 @@ namespace BankSystem.Data.Storages
 
         public void DeleteAccount(Client client, Account account)
         {
-            Account? findAccount = _collection[client].FirstOrDefault(a => a.Id == account.Id);
-            if (findAccount != null)
-                _collection[client].Remove(findAccount);
-
+            _collection[client].Remove(account);
         }
 
         public List<Account> GetAccount(Client client, Func<Account, bool> filter)
         {
             return _collection[client].Where(filter).ToList();
         }
-
-
-        //public Client Min<TKey>(Func<Client, TKey> keySelector)
-        //{
-        //    return _collection.Keys.OrderBy(keySelector).First();
-        //}
-
-        //public Client Max<TKey>(Func<Client, TKey> keySelector)
-        //{
-        //    return _collection.Keys.OrderByDescending(keySelector).First();
-        //}
-
-
-        //public Account? GetClientAccount(Client client, int idAccount)
-        //{
-        //    return _collection[client].Find(a => a.Id == idAccount);
-        //}
-
-        //public Client? GetClient(Func<Client, bool> predicate)
-        //{
-        //    return _collection.Keys.Where(predicate).FirstOrDefault();
-        //}
-        //public List<Client> GetClients(Func<Client, bool> predicate)
-        //{
-        //    return _collection.Keys.Where(predicate).ToList();
-        //}
-
-        //public int Sum(Func<Client, int> selector)
-        //{
-        //    return _collection.Keys.Sum(selector);
-        //}
-
-        //public int Count() => _collection.Count;
-
-
-
-
     }
 }

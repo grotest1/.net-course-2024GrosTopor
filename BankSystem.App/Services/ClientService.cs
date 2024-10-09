@@ -67,11 +67,5 @@ namespace BankSystem.App.Services
 
             return _clientStorage.GetAccount(client, a => a.Id == idAccount).FirstOrDefault();
         }
-
-
-        //public int GetClientsCount()
-        //{
-        //    return _clientStorage.Count();
-        //}
     }
 }
