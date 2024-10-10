@@ -1,56 +1,61 @@
 ﻿using BankSystem.Domain.Models;
+using System;
+using System.Linq;
+using System.Security.Principal;
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorage
+    public class ClientStorage : IClientStorage
     {
         private readonly Dictionary<Client, List<Account>> _collection = [];
 
-        public void Add(Client client, List<Account> accounts) => _collection.Add(client, accounts);
-
-        public Client Min<TKey>(Func<Client, TKey> keySelector)
+        public void Add(Client client)
         {
-            return _collection.Keys.OrderBy(keySelector).First();
+            _collection.Add(client, []);
         }
 
-        public Client Max<TKey>(Func<Client, TKey> keySelector)
+        public void Update(Client client)
         {
-            return _collection.Keys.OrderByDescending(keySelector).First();
+            Client? findClient = _collection.Keys.FirstOrDefault(c => c.Id == client.Id);
+            if (findClient != null)
+            {
+                findClient.Age = client.Age;
+                findClient.Name = client.Name;
+                findClient.Passport = client.Passport;
+                findClient.PersonalPhoneNumber = client.PersonalPhoneNumber;
+            }
         }
 
-        public void AddClientAccount(Client client, Account account)
+        public void Delete(Client client)
+        {
+            _collection.Remove(client);
+        }
+
+        public List<Client> Get(Func<Client, bool> filter)
+        {
+            return _collection.Keys.Where(filter).ToList();
+        }
+
+        public void AddAccount(Client client, Account account)
         {
             _collection[client].Add(account);
         }
 
-        public void UpdateClientAccount(Client client, Account account, int newAccountSum)
+        public void UpdateAccount(Client client, Account account)
         {
-            Account? findAccount = _collection[client].Find(a => a == account);
+            Account? findAccount = _collection[client].FirstOrDefault(a => a.Id == account.Id);
             if (findAccount != null)
-            {
-                findAccount.Amount = newAccountSum;
-            }
+                findAccount.Amount = account.Amount;
         }
 
-        public Account? GetClientAccount(Client client, int idAccount)
+        public void DeleteAccount(Client client, Account account)
         {
-            return _collection[client].Find(a => a.Id == idAccount);
+            _collection[client].Remove(account);
         }
 
-        public Client? GetClient(Func<Client, bool> predicate)
+        public List<Account> GetAccount(Client client, Func<Account, bool> filter)
         {
-            return _collection.Keys.Where(predicate).FirstOrDefault();
+            return _collection[client].Where(filter).ToList();
         }
-        public List<Client> GetClients(Func<Client, bool> predicate)
-        {
-            return _collection.Keys.Where(predicate).ToList();
-        }
-
-        public int Sum(Func<Client, int> selector)
-        {
-            return _collection.Keys.Sum(selector);
-        }
-
-        public int Count() => _collection.Count;
     }
 }

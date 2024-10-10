@@ -11,10 +11,10 @@ namespace BankSystem.App.Services
 {
     public class ClientService
     {
-        private ClientStorage _clientStorage;
-        public ClientService()
+        private IClientStorage _clientStorage;
+        public ClientService(IClientStorage clientStorage)
         {
-            _clientStorage = new ClientStorage();
+            _clientStorage = clientStorage;
         }
 
         public void AddClient(Client client)
@@ -27,51 +27,45 @@ namespace BankSystem.App.Services
                 throw new EmptyRequiredDataException("Passport");
 
             Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" } };
-            _clientStorage.Add(client, new List<Account> { defaultAccount });
+            _clientStorage.Add(client);
+            _clientStorage.AddAccount(client, defaultAccount);
         }
 
         public List<Client> GetClients(Func<Client, bool> predicate)
         {
-            return _clientStorage.GetClients(predicate);
-        }
-        public Client? GetClient(Func<Client, bool> predicate)
-        {
-            return _clientStorage.GetClient(predicate);
+            return _clientStorage.Get(predicate);
         }
 
         public void AddAccount(Client client, Account account)
         {
-            if (_clientStorage.GetClient(c => c == client) == null)
+
+            if (_clientStorage.Get(c => c == client).Count == 0)
                 throw new MissingDataException("Клиент не найден");
             else if (account.Currency.Code == 0)
                 throw new EmptyRequiredDataException("Currency.Code");
             else if (account.Currency.Name == "")
                 throw new EmptyRequiredDataException("Currency.Name");
 
-            _clientStorage.AddClientAccount(client, account);
+            _clientStorage.AddAccount(client, account);
         }
-        public void UpdateAccount(Client client, Account account, int newAccountSum)
+        public void UpdateAccount(Client client, Account account)
         {
-            if (_clientStorage.GetClient(c => c == client) == null)
+            if (_clientStorage.Get(c => c == client).Count == 0)
                 throw new MissingDataException("Клиент не найден");
-            else if (_clientStorage.GetClientAccount(client, account.Id) == null)
+            else if (_clientStorage.GetAccount(client, a => a.Id == account.Id).Count == 0)
                 throw new MissingDataException("Лицевой счет не принадлежит клиенту");
 
-            _clientStorage.UpdateClientAccount(client, account, newAccountSum);
+            _clientStorage.UpdateAccount(client, account);
         }
 
-        public Account? GetClientAccount(Client client, int idAccount)
+        public Account? GetClientAccount(int idClient, int idAccount)
         {
-            if (_clientStorage.GetClient(c => c == client) == null)
+            Client? client = _clientStorage.Get(c => c.Id == idClient).FirstOrDefault();
+
+            if (client == null)
                 throw new MissingDataException("Клиент не найден");
 
-            return _clientStorage.GetClientAccount(client, idAccount);
-        }
-
-
-        public int GetClientsCount()
-        {
-            return _clientStorage.Count();
+            return _clientStorage.GetAccount(client, a => a.Id == idAccount).FirstOrDefault();
         }
     }
 }

@@ -1,20 +1,20 @@
-﻿using BankSystem.App.Exceptions;
-using BankSystem.Data.Storages;
-using BankSystem.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankSystem.Domain.Models;
+using BankSystem.App.Exceptions;
+using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Services
 {
     public class EmployeeService
     {
-        private EmployeeStorage _employeeStorage;
-        public EmployeeService()
+        private IStorage<Employee> _employeeStorage;
+        public EmployeeService(IStorage<Employee> employeeStorage)
         {
-            _employeeStorage = new EmployeeStorage();
+            _employeeStorage = employeeStorage;
         }
 
         public void AddEmployee(Employee employee)
@@ -29,20 +29,9 @@ namespace BankSystem.App.Services
             _employeeStorage.Add(employee);
         }
 
-        public Employee? GetEmployee(Func<Employee, bool> predicate)
-        {
-            return _employeeStorage.GetEmployee(predicate);
-        }
-
         public List<Employee> GetEmployees(Func<Employee, bool> predicate)
         {
-            return _employeeStorage.GetEmployees(predicate);
+            return _employeeStorage.Get(predicate);
         }
-
-        public int GetEmployeesCount()
-        {
-            return _employeeStorage.Count();
-        }
-
     }
 }
