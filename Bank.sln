@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{BCDD88E8-992E-4798-A26E-12FB1F55E5A5}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\Users\Nout\AppData\Roaming\JetBrains\DataGrip2020.1\consoles\db\6c49b277-64a2-443a-bd92-a902884be2e1\SQL practic.sql = ..\..\Users\Nout\AppData\Roaming\JetBrains\DataGrip2020.1\consoles\db\6c49b277-64a2-443a-bd92-a902884be2e1\SQL practic.sql
+		SQL practic2.sql = SQL practic2.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{6451E729-BC9C-4A14-A10D-986C8E6C6F86}"
