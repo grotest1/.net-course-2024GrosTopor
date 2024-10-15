@@ -27,9 +27,7 @@ namespace BankSystem.App.Services
             else if (client.Passport == "")
                 throw new EmptyRequiredDataException("Passport");
 
-            //Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" } };
-            Account defaultAccount = new Account() {CurrencyName = "фантики",
-                                                    Client = client};
+            Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" }, Client = client };
             
             _clientStorage.Add(client);
             _clientStorage.AddAccount(defaultAccount);
@@ -61,12 +59,10 @@ namespace BankSystem.App.Services
 
         public void AddAccount(Account account)
         {
-            if (account.CurrencyName == "")
-                throw new EmptyRequiredDataException("CurrencyName");
-            //if (account.Currency.Code == 0)
-            //    throw new EmptyRequiredDataException("Currency.Code");
-            //else if (account.Currency.Name == "")
-            //    throw new EmptyRequiredDataException("Currency.Name");
+            if (account.Currency.Code == 0)
+                throw new EmptyRequiredDataException("Currency.Code");
+            else if (account.Currency.Name == "")
+                throw new EmptyRequiredDataException("Currency.Name");
 
             _clientStorage.AddAccount(account);
         }

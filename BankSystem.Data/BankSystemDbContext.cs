@@ -14,6 +14,8 @@ namespace BankSystem.Data
         public DbSet<Client> Clients => Set<Client>();
         public DbSet<Employee> Employees => Set<Employee>();
         public DbSet<Account> Accounts => Set<Account>();
+        public DbSet<Currency> Currencies => Set<Currency>();
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,6 +30,7 @@ namespace BankSystem.Data
             modelBuilder.ApplyConfiguration(new ClientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AccountEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CurrancyEntityTypeConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

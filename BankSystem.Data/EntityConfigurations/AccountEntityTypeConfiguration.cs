@@ -17,13 +17,13 @@ namespace BankSystem.Data.EntityConfigurations
             
             builder.Property(e => e.Id).HasColumnName("id");
             builder.Property(e => e.ClientId).HasColumnName("client_id");
+            builder.Property(e => e.CurrencyId).HasColumnName("currency_id");
             builder.Property(c => c.Amount).IsRequired().HasColumnName("amount");
-            builder.Property(c => c.CurrencyName).HasMaxLength(100).IsRequired().HasColumnName("currency_name");
-            //builder.Property(c => c.Currency.Name).HasMaxLength(100).IsRequired().HasColumnName("currency_name");
             
             builder.HasKey(e => e.Id);
 
             builder.HasOne(cl => cl.Client).WithMany(co => co.Accounts).HasForeignKey(cl => cl.ClientId);
+            builder.HasOne(cl => cl.Currency).WithMany(co => co.Accounts).HasForeignKey(cl => cl.CurrencyId);
         }
     }
 }
