@@ -8,6 +8,6 @@ namespace BankSystem.Domain.Models
 {
     public class Client : Person
     {
-        
+        public List<Account> Accounts { get; set; } = new();
     }
 }

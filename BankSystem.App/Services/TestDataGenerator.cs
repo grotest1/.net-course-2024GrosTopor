@@ -24,8 +24,9 @@ namespace BankSystem.App.Services
         {
             var faker = new Faker<Account>("ru")
                .RuleFor(p => p.Amount, f => f.Random.Int(-1000, 1000))
-               .RuleFor(p => p.Currency.Name, f => f.Name.FirstName())
-               .RuleFor(p => p.Currency.Code, f => f.Random.Int(100, 600));
+               //.RuleFor(p => p.Currency.Name, f => f.Name.FirstName())
+               //.RuleFor(p => p.Currency.Code, f => f.Random.Int(100, 600));
+               .RuleFor(p => p.CurrencyName, f => f.Name.FirstName());
 
             return faker.Generate(countElements);
         }
@@ -65,7 +66,8 @@ namespace BankSystem.App.Services
 
             for (int i = 0; i < countElements; i++)
             {
-                Account account = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+                //Account account = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+                Account account = new Account { Amount = rnd.Next(10, 100), CurrencyName = "dsa"};
                 resultDictionary.TryAdd(randomClients[i], account);
             }
 
@@ -88,7 +90,8 @@ namespace BankSystem.App.Services
                 Account[] clientAccounts = new Account[rndCountAccounts];
 
                 for (int j = 0; j < rndCountAccounts; j++)
-                    clientAccounts[j] = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+                    //clientAccounts[j] = new Account { Amount = rnd.Next(10, 100), Currency = currencyRub };
+                    clientAccounts[j] = new Account { Amount = rnd.Next(10, 100), CurrencyName = "fdsa" };
  
                 resultDictionary.TryAdd(randomClients[i], clientAccounts);
             }

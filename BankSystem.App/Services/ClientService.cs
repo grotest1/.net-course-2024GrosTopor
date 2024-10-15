@@ -26,7 +26,8 @@ namespace BankSystem.App.Services
             else if (client.Passport == "")
                 throw new EmptyRequiredDataException("Passport");
 
-            Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" } };
+            //Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" } };
+            Account defaultAccount = new Account() { CurrencyName = "фантики" };
             _clientStorage.Add(client);
             _clientStorage.AddAccount(client, defaultAccount);
         }
@@ -41,10 +42,10 @@ namespace BankSystem.App.Services
 
             if (_clientStorage.Get(c => c == client).Count == 0)
                 throw new MissingDataException("Клиент не найден");
-            else if (account.Currency.Code == 0)
-                throw new EmptyRequiredDataException("Currency.Code");
-            else if (account.Currency.Name == "")
-                throw new EmptyRequiredDataException("Currency.Name");
+            //else if (account.Currency.Code == 0)
+            //    throw new EmptyRequiredDataException("Currency.Code");
+            //else if (account.Currency.Name == "")
+            //    throw new EmptyRequiredDataException("Currency.Name");
 
             _clientStorage.AddAccount(client, account);
         }
@@ -58,7 +59,7 @@ namespace BankSystem.App.Services
             _clientStorage.UpdateAccount(client, account);
         }
 
-        public Account? GetClientAccount(int idClient, int idAccount)
+        public Account? GetClientAccount(Guid idClient, Guid idAccount)
         {
             Client? client = _clientStorage.Get(c => c.Id == idClient).FirstOrDefault();
 

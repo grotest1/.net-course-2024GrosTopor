@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BankSystem.Data.EntityConfigurations
 {
-    internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
+    internal class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee>
     {
-        public void Configure(EntityTypeBuilder<Client> builder)
+        public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.ToTable("clients");
+            builder.ToTable("employees");
             
             builder.Property(e => e.Id).HasColumnName("id");
             
@@ -23,6 +23,8 @@ namespace BankSystem.Data.EntityConfigurations
             builder.Property(c => c.PersonalPhoneNumber).HasMaxLength(100).IsRequired().HasColumnName("phone");
             builder.Property(c => c.Passport).HasMaxLength(100).IsRequired().HasColumnName("passport");
             builder.Property(c => c.Birthday).IsRequired().HasColumnName("birthday");
+            builder.Property(c => c.Contract).HasMaxLength(1000).IsRequired().HasColumnName("contract");
+            builder.Property(c => c.Salary).IsRequired().HasColumnName("salary");
 
             builder.HasKey(e => e.Id);
         }

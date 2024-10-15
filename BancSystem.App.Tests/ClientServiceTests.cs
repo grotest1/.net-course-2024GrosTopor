@@ -48,7 +48,8 @@ namespace BancSystem.App.Tests
             ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики"} };
+            //Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики"} };
+            Account account = new Account() { Amount = 159, CurrencyName = "фантики" };
 
             clientService.AddAccount(client, account);
         }
@@ -60,7 +61,8 @@ namespace BancSystem.App.Tests
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
 
             Client anotherClient = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
-            Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            //Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account account = new Account() { Amount = 159, CurrencyName = "фантики" };
 
             Assert.Throws<MissingDataException>(() => clientService.AddAccount(anotherClient, account));
         }
@@ -71,7 +73,8 @@ namespace BancSystem.App.Tests
             ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account = new Account() { Amount = 159, Currency = new Currency()};
+            //Account account = new Account() { Amount = 159, Currency = new Currency()};
+            Account account = new Account() { Amount = 159, CurrencyName = "фантики" };
 
             Assert.Throws<EmptyRequiredDataException>(() => clientService.AddAccount(client, account));
         }
@@ -82,8 +85,13 @@ namespace BancSystem.App.Tests
             ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account     = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
-            Account accountNew  = new Account() { Id = 999, Amount = 500, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            
+            //Account account     = new Account() { Id = Guid.NewGuid(), Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account account     = new Account() { Id = Guid.NewGuid(), Amount = 159, CurrencyName = "фантики" };
+           
+            //Account accountNew  = new Account() { Id = Guid.NewGuid(), Amount = 500, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account accountNew  = new Account() { Id = Guid.NewGuid(), Amount = 500, CurrencyName = "фантики" };
+            
             clientService.AddAccount(client, account);
 
             clientService.UpdateAccount(client, accountNew);
@@ -98,7 +106,8 @@ namespace BancSystem.App.Tests
             ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            //Account account = new Account() { Id = Guid.NewGuid(), Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account account = new Account() { Id = Guid.NewGuid(), Amount = 159,     };
             clientService.AddAccount(client, account);
 
             Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(new Client(), account));
@@ -110,7 +119,8 @@ namespace BancSystem.App.Tests
             ClientService clientService = new ClientService(new ClientStorage());
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             clientService.AddClient(client);
-            Account account = new Account() { Id = 999, Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            //Account account = new Account() { Id = Guid.NewGuid(), Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" } };
+            Account account = new Account() { Id = Guid.NewGuid(), Amount = 159, CurrencyName = "фантики" };
 
             Assert.Throws<MissingDataException>(() => clientService.UpdateAccount(client, account));
         }

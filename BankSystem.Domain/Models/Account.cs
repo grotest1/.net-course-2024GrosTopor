@@ -8,8 +8,11 @@ namespace BankSystem.Domain.Models
 {
     public class Account
     {
-        public int Id { get; set; }
-        public Currency Currency { get; set; }
+        public Guid Id { get; set; }
+        //public Currency Currency { get; set; }
+        public string CurrencyName { get; set; } = "";
         public int Amount { get; set; }
+        public Guid ClientId { get; set; }
+        public Client? Client { get; set; }
     }
 }
