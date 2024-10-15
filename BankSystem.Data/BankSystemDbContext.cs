@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Data
 {
-    internal class BankSystemDbContext : DbContext
+    public class BankSystemDbContext : DbContext
     {
         public DbSet<Client> Clients => Set<Client>();
         public DbSet<Employee> Employees => Set<Employee>();
