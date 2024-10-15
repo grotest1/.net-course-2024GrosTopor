@@ -12,7 +12,7 @@ namespace BankSystem.Data.Tests
         [Fact]
         public void AddRangeAndCount5000Clients()
         {
-            EmployeeStorage employeeStorage = new EmployeeStorage();
+            EmployeeStorageEF employeeStorage = new EmployeeStorageEF();
                 
             employeeStorage.Add(new Employee() { Name = "Tom", Age = 30});
 

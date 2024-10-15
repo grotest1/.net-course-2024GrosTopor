@@ -11,7 +11,7 @@ namespace BankSystem.Data.Storages
 {
     public class EmployeeStorageEF : IStorage<Employee>
     {
-        BankSystemDbContext db = new BankSystemDbContext();
+        private readonly BankSystemDbContext db = new BankSystemDbContext();
 
         public void Add(Employee employee)
         {

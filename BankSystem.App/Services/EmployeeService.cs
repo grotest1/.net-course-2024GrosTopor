@@ -31,6 +31,24 @@ namespace BankSystem.App.Services
             _employeeStorage.Add(employee);
         }
 
+        public void UpdateEmployee(Employee employee)
+        {
+            if (GetEmployee(employee.Id) == null)
+                throw new MissingDataException("Сотрудник не найден");
+
+            _employeeStorage.Update(employee);
+        }
+
+        public void DeleteEmployee(Employee employee)
+        {
+            _employeeStorage.Delete(employee);
+        }
+
+        public Employee? GetEmployee(Guid employeeId)
+        {
+            return _employeeStorage.Get(c => c.Id == employeeId).FirstOrDefault();
+        }
+
         public List<Employee> GetEmployees(Func<Employee, bool> predicate)
         {
             return _employeeStorage.Get(predicate);
