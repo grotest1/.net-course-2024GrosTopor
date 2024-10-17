@@ -1,9 +1,4 @@
 ﻿using BankSystem.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 
 namespace BankSystem.App.Services
@@ -26,6 +21,7 @@ namespace BankSystem.App.Services
                .RuleFor(p => p.Amount, f => f.Random.Int(-1000, 1000))
                .RuleFor(p => p.Currency.Name, f => f.Name.FirstName())
                .RuleFor(p => p.Currency.Code, f => f.Random.Int(100, 600));
+
 
             return faker.Generate(countElements);
         }
