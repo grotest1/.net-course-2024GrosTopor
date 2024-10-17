@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.App.Services;
+﻿using BankSystem.App.Services;
 using Xunit;
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
-using BankSystem.Data;
 
 namespace BancSystem.App.Tests
 {

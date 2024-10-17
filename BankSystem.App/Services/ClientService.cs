@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.Domain.Models;
+﻿using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
-using System.Security.Principal;
 
 namespace BankSystem.App.Services
 {
@@ -20,17 +14,18 @@ namespace BankSystem.App.Services
 
         public void AddClient(Client client)
         {
-            if (client.Name == "")
+            
+            if (string.IsNullOrEmpty(client.Name))
                 throw new EmptyRequiredDataException("Name");
             else if (client.Age < 18)
                 throw new UnderAgeException(client.Age);
-            else if (client.Passport == "")
+            else if (string.IsNullOrEmpty(client.Passport))
                 throw new EmptyRequiredDataException("Passport");
 
             Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" }, Client = client };
             
             _clientStorage.Add(client);
-            _clientStorage.AddAccount(defaultAccount);
+            _clientStorage.AddAccount(client, defaultAccount);
         }
 
         public void UpdateClient(Client client)
@@ -57,14 +52,14 @@ namespace BankSystem.App.Services
             return _clientStorage.Get(predicate);
         }
 
-        public void AddAccount(Account account)
+        public void AddAccount(Client client, Account account)
         {
             if (account.Currency.Code == 0)
                 throw new EmptyRequiredDataException("Currency.Code");
-            else if (account.Currency.Name == "")
+            else if (string.IsNullOrEmpty(account.Currency.Name))
                 throw new EmptyRequiredDataException("Currency.Name");
 
-            _clientStorage.AddAccount(account);
+            _clientStorage.AddAccount(client, account);
         }
         public void UpdateAccount(Account account)
         {

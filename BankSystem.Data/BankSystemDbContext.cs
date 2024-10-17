@@ -1,11 +1,6 @@
 ﻿using BankSystem.Data.EntityConfigurations;
 using BankSystem.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankSystem.Data
 {
@@ -24,8 +19,7 @@ namespace BankSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null) throw new
-                 ArgumentNullException(nameof(modelBuilder));
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new ClientEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeEntityTypeConfiguration());

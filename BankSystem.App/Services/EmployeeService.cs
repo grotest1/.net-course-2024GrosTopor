@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.Domain.Models;
+﻿using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
-using BankSystem.Data;
 
 namespace BankSystem.App.Services
 {
@@ -21,11 +15,11 @@ namespace BankSystem.App.Services
 
         public void AddEmployee(Employee employee)
         {
-            if (employee.Name == "")
+            if (string.IsNullOrEmpty(employee.Name))
                 throw new EmptyRequiredDataException("Name");
             else if (employee.Age < 18)
                 throw new UnderAgeException(employee.Age);
-            else if (employee.Passport == "")
+            else if (string.IsNullOrEmpty(employee.Passport))
                 throw new EmptyRequiredDataException("Passport");
 
             _employeeStorage.Add(employee);

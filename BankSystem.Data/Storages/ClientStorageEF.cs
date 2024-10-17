@@ -1,7 +1,4 @@
 ﻿using BankSystem.Domain.Models;
-using System;
-using System.Linq;
-using System.Security.Principal;
 
 namespace BankSystem.Data.Storages
 {
@@ -41,8 +38,9 @@ namespace BankSystem.Data.Storages
             return db.Clients.Where(filter).ToList();
         }
 
-        public void AddAccount(Account account)
+        public void AddAccount(Client client, Account account)
         {
+            account.Client = client;
             db.Accounts.Add(account);
             db.SaveChanges();
         }

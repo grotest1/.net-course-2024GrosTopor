@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.App.Services;
+﻿using BankSystem.App.Services;
 using Xunit;
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
@@ -51,7 +46,7 @@ namespace BancSystem.App.Tests
             clientService.AddClient(client);
             Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики"},Client = client };
 
-            clientService.AddAccount(account);
+            clientService.AddAccount(client, account);
         }
 
         [Fact]
@@ -61,7 +56,7 @@ namespace BancSystem.App.Tests
             Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
             Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "" }, Client = client };
 
-            Assert.Throws<MissingDataException>(() => clientService.AddAccount(account));
+            Assert.Throws<MissingDataException>(() => clientService.AddAccount(client, account));
         }
 
         [Fact]
@@ -76,7 +71,7 @@ namespace BancSystem.App.Tests
 
             Account accountNew  = new Account() { Id = accountId, Amount = 500, Currency = new Currency() { Code = 501, Name = "фантики" } };
             
-            clientService.AddAccount(account);
+            clientService.AddAccount(client, account);
 
             clientService.UpdateAccount(accountNew);
 

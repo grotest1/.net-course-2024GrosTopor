@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BankSystem.Domain.Models
 {
     public class Person
@@ -34,7 +28,13 @@ namespace BankSystem.Domain.Models
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() + Birthday.GetHashCode() + Age.GetHashCode() + PersonalPhoneNumber.GetHashCode() + Passport.GetHashCode();
+            return Id.GetHashCode() 
+                + Name.GetHashCode() 
+                + Surname.GetHashCode()
+                + Birthday.GetHashCode() 
+                + Age.GetHashCode() 
+                + PersonalPhoneNumber.GetHashCode() 
+                + Passport.GetHashCode();
         }
     }
 }
