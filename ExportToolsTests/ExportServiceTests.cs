@@ -3,14 +3,11 @@ using BankSystem.Domain.Models;
 using ExportTool;
 using BankSystem.App.Services;
 using BankSystem.Data.Storages;
-using BankSystem.App.Exceptions;
-using System.Security.Principal;
 
 namespace ExportToolsTests
 {
     public class ExportServiceTests
     {
-
         [Fact]
         public void WriteElementsToCsvClientsPositiveTest()
         {
@@ -54,6 +51,5 @@ namespace ExportToolsTests
 
             Assert.Throws<DirectoryNotFoundException>(() => ExportService.ReadElementsFromCsv<Client>(path, "test.csv"));
         }
-
     }
 }

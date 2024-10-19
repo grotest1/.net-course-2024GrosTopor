@@ -9,15 +9,9 @@ namespace ExportTool
 {
     public static class ExportService
     {
-
         public static void WriteElementsToCsv<TElement>(List<TElement> items, string[] pathToDirectory, string fileName, char delimiter = ';') where TElement : class
         {
-
-            if (pathToDirectory.Length == 0)
-                throw new FormatException("Некорректный путь директории.");
-
-            if (!fileName.EndsWith(".csv"))
-                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
+            BasicVerification(pathToDirectory, fileName);
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
             if (!dirInfo.Exists)
@@ -55,13 +49,7 @@ namespace ExportTool
 
         public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName, char delimiter = ';')
         {
-
-            if (pathToDirectory.Length == 0)
-                throw new FormatException("Некорректный путь директории.");
-
-            if (!fileName.EndsWith(".csv"))
-                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
-
+            BasicVerification(pathToDirectory, fileName);
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
 
@@ -89,5 +77,16 @@ namespace ExportTool
             }
             return items;
         }
+    
+    
+        private static void BasicVerification(string[] pathToDirectory, string fileName)
+        {
+            if (pathToDirectory.Length == 0)
+                throw new FormatException("Некорректный путь директории.");
+
+            if (!fileName.EndsWith(".csv"))
+                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
+        }
+
     }
 }
