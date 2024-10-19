@@ -1,6 +1,10 @@
 ﻿using Xunit;
 using BankSystem.Domain.Models;
 using ExportTool;
+using BankSystem.App.Services;
+using BankSystem.Data.Storages;
+using BankSystem.App.Exceptions;
+using System.Security.Principal;
 
 namespace ExportToolsTests
 {
@@ -8,21 +12,39 @@ namespace ExportToolsTests
     {
 
         [Fact]
-        public void WritePersonsToCsvPositiveTest()
+        public void WriteElementsToCsvClientsPositiveTest()
         {
-            List<Client> clients = new List<Client>();
-            clients.Add(new Client() { Name = "fdsfsa", Age = 55 });
-            string[] path = { "C:", "1", "2", "test.csv" };
+            ClientService clientService = new ClientService(new ClientStorageEF());
+            List<Client> clients = clientService.GetClients(c => true);
+            string[] path = { "C:", "1", "2"};
 
-            ExportService.WriteClientsToCsv(clients, path);
+            ExportService.WriteElementsToCsv<Client>(clients, path, "test.csv");
         }
 
         [Fact]
-        public void ReadClientsFromCsvPositiveTest()
+        public void WriteElementsToCsvClientsNegativeTest()
         {
-            string[] path = { "C:", "1", "2", "test.csv" };
+            ClientService clientService = new ClientService(new ClientStorageEF());
+            List<Client> clients = clientService.GetClients(c => true);
+            string[] path = { "C:", "1", "2" };
 
-            var clients = ExportService.ReadClientsFromCsv(path);
+            Assert.Throws<FormatException>(() => ExportService.WriteElementsToCsv<Client>(clients, path, "test.txt"));   
+        }
+
+        [Fact]
+        public void ReadElementsFromCsvClientsPositiveTest()
+        {
+            string[] path = { "C:", "1", "2" };
+
+            var clients = ExportService.ReadElementsFromCsv<Client>(path, "test.csv");
+        }
+
+        [Fact]
+        public void ReadElementsFromCsvClientsNegativeTest()
+        {
+            string[] path = { "C:", "Диплом", "авыафы" };
+
+            Assert.Throws<DirectoryNotFoundException>(() => ExportService.ReadElementsFromCsv<Client>(path, "test.csv"));
         }
 
     }

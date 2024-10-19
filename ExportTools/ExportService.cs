@@ -1,45 +1,49 @@
 ﻿using BankSystem.Domain.Models;
 using CsvHelper;
+using CsvHelper.Configuration;
 using System.Formats.Asn1;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace ExportTool
 {
     public static class ExportService
     {
 
-        public static void WriteClientsToCsv(List<Client> clients, string[] paths)
+        public static void WriteElementsToCsv<TElement>(List<TElement> items, string[] pathToDirectory, string fileName, char delimiter = ';') where TElement : class
         {
 
-            if (paths.Length == 0)
-                return;
+            if (pathToDirectory.Length == 0)
+                throw new FormatException("Некорректный путь директории.");
 
-            string[] dirPath = new string[paths.Length - 1];
-            for (int i = 0; i < paths.Length - 1; i++)
-            {
-                dirPath[i] = paths[i];
-            }
+            if (!fileName.EndsWith(".svg"))
+                throw new FormatException("Некорректный формат файла. Требуется '.svg'");
 
-            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(dirPath));
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
             if (!dirInfo.Exists)
             {
                 dirInfo.Create();
             }
 
+            string fullPath = Path.Combine(dirInfo.Name, fileName);
 
-            string fullPath = Path.Combine(paths);
             using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
             {
                 using (StreamWriter streamWriter = new StreamWriter(fileStream))
                 {
-                    using (var writer = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                     {
-                        writer.WriteHeader<Client>();
+                        Delimiter = delimiter.ToString()
+                    };
+
+                    using (var writer = new CsvWriter(streamWriter, config))
+                    {
+                        writer.WriteHeader<TElement>();
                         writer.NextRecord();
 
-                        foreach (Client client in clients)
+                        foreach (TElement item in items)
                         {
-                            writer.WriteRecord<Client>(client);
+                            writer.WriteRecord<TElement>(item);
                         }
 
                         writer.Flush();
@@ -48,13 +52,28 @@ namespace ExportTool
             }
         }
 
-        public static List<Client> ReadClientsFromCsv(string[] paths)
+        public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName)
         {
+
+            if (pathToDirectory.Length == 0)
+                throw new FormatException("Некорректный путь директории.");
+
+            if (!fileName.EndsWith(".svg"))
+                throw new FormatException("Некорректный формат файла. Требуется '.svg'");
+
+
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+            if (!dirInfo.Exists)
+                throw new DirectoryNotFoundException(dirInfo.Name);
+
+            string fullPath = Path.Combine(dirInfo.Name, fileName);
             
-            List<Client> clients = new List<Client>();
-            
-            string fullPath = Path.Combine(paths);
-            using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
+            //if (!File.Exists(fullPath))
+            //    throw new FileNotFoundException(fileName);
+
+            List<TElement> items = new List<TElement>();
+
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.Open))
             {
                 using (StreamReader streamReader = new StreamReader(fileStream))
                 {
@@ -62,12 +81,12 @@ namespace ExportTool
                     {
                         while (reader.Read())
                         { 
-                            clients.Add(reader.GetRecord<Client>());
+                            items.Add(reader.GetRecord<TElement>());
                         }
                     }
                 }
             }
-            return clients;
+            return items;
         }
     }
 }
