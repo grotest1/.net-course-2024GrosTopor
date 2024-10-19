@@ -14,21 +14,27 @@ namespace ExportToolsTests
         [Fact]
         public void WriteElementsToCsvClientsPositiveTest()
         {
-            ClientService clientService = new ClientService(new ClientStorageEF());
-            List<Client> clients = clientService.GetClients(c => true);
-            string[] path = { "C:", "1", "2"};
+            using (ClientStorageEF clientStorageEF = new ClientStorageEF())
+            {
+                ClientService clientService = new ClientService(clientStorageEF);
+                List<Client> clients = clientService.GetClients(c => true);
+                string[] path = { "C:", "1", "2"};
 
-            ExportService.WriteElementsToCsv<Client>(clients, path, "test.csv");
+                ExportService.WriteElementsToCsv<Client>(clients, path, "test.csv");
+            }
         }
 
         [Fact]
         public void WriteElementsToCsvClientsNegativeTest()
         {
-            ClientService clientService = new ClientService(new ClientStorageEF());
-            List<Client> clients = clientService.GetClients(c => true);
-            string[] path = { "C:", "1", "2" };
+            using (ClientStorageEF clientStorageEF = new ClientStorageEF())
+            {
+                ClientService clientService = new ClientService(clientStorageEF);
+                List<Client> clients = clientService.GetClients(c => true);
+                string[] path = { "C:", "1", "2" };
 
-            Assert.Throws<FormatException>(() => ExportService.WriteElementsToCsv<Client>(clients, path, "test.txt"));   
+                Assert.Throws<FormatException>(() => ExportService.WriteElementsToCsv<Client>(clients, path, "test.txt"));   
+            }
         }
 
         [Fact]
@@ -36,13 +42,15 @@ namespace ExportToolsTests
         {
             string[] path = { "C:", "1", "2" };
 
-            var clients = ExportService.ReadElementsFromCsv<Client>(path, "test.csv");
+            List<Client> clients = ExportService.ReadElementsFromCsv<Client>(path, "test.csv");
+
+            Assert.NotEmpty(clients);
         }
 
         [Fact]
         public void ReadElementsFromCsvClientsNegativeTest()
         {
-            string[] path = { "C:", "Диплом", "авыафы" };
+            string[] path = { "C:", "Диплом" };
 
             Assert.Throws<DirectoryNotFoundException>(() => ExportService.ReadElementsFromCsv<Client>(path, "test.csv"));
         }

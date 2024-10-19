@@ -16,8 +16,8 @@ namespace ExportTool
             if (pathToDirectory.Length == 0)
                 throw new FormatException("Некорректный путь директории.");
 
-            if (!fileName.EndsWith(".svg"))
-                throw new FormatException("Некорректный формат файла. Требуется '.svg'");
+            if (!fileName.EndsWith(".csv"))
+                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
             if (!dirInfo.Exists)
@@ -25,7 +25,7 @@ namespace ExportTool
                 dirInfo.Create();
             }
 
-            string fullPath = Path.Combine(dirInfo.Name, fileName);
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
 
             using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
             {
@@ -44,6 +44,7 @@ namespace ExportTool
                         foreach (TElement item in items)
                         {
                             writer.WriteRecord<TElement>(item);
+                            writer.NextRecord();
                         }
 
                         writer.Flush();
@@ -52,32 +53,32 @@ namespace ExportTool
             }
         }
 
-        public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName)
+        public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName, char delimiter = ';')
         {
 
             if (pathToDirectory.Length == 0)
                 throw new FormatException("Некорректный путь директории.");
 
-            if (!fileName.EndsWith(".svg"))
-                throw new FormatException("Некорректный формат файла. Требуется '.svg'");
+            if (!fileName.EndsWith(".csv"))
+                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
 
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
-            if (!dirInfo.Exists)
-                throw new DirectoryNotFoundException(dirInfo.Name);
 
-            string fullPath = Path.Combine(dirInfo.Name, fileName);
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
             
-            //if (!File.Exists(fullPath))
-            //    throw new FileNotFoundException(fileName);
-
             List<TElement> items = new List<TElement>();
 
             using (FileStream fileStream = new FileStream(fullPath, FileMode.Open))
             {
                 using (StreamReader streamReader = new StreamReader(fileStream))
                 {
-                    using (var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                    {
+                        Delimiter = delimiter.ToString()
+                    };
+
+                    using (var reader = new CsvReader(streamReader, config))
                     {
                         while (reader.Read())
                         { 
