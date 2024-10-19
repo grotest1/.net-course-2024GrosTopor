@@ -47,7 +47,7 @@ namespace ExportTool
             }
         }
 
-        public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName, char delimiter = ';')
+        public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName, char delimiter = ';') where TElement : class
         {
             BasicVerification(pathToDirectory, fileName);
 
