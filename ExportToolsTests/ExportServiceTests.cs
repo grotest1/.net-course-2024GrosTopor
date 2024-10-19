@@ -15,8 +15,14 @@ namespace ExportToolsTests
             string[] path = { "C:", "1", "2", "test.csv" };
 
             ExportService.WriteClientsToCsv(clients, path);
+        }
 
+        [Fact]
+        public void ReadClientsFromCsvPositiveTest()
+        {
+            string[] path = { "C:", "1", "2", "test.csv" };
 
+            var clients = ExportService.ReadClientsFromCsv(path);
         }
 
     }

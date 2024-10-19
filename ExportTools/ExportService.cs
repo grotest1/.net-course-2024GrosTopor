@@ -8,7 +8,7 @@ namespace ExportTool
     public static class ExportService
     {
 
-        public static void WriteClientsToCsv(List<Client> persons, string[] paths)
+        public static void WriteClientsToCsv(List<Client> clients, string[] paths)
         {
 
             if (paths.Length == 0)
@@ -34,16 +34,12 @@ namespace ExportTool
                 {
                     using (var writer = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
                     {
-                        writer.WriteField(nameof(Person.Name));
-                        writer.WriteField(nameof(Person.Age));
-
+                        writer.WriteHeader<Client>();
                         writer.NextRecord();
 
-                        foreach (Person person in persons)
+                        foreach (Client client in clients)
                         {
-                            writer.WriteField(person.Name);
-                            writer.WriteField(person.Age);
-                            writer.NextRecord();
+                            writer.WriteRecord<Client>(client);
                         }
 
                         writer.Flush();
@@ -52,5 +48,26 @@ namespace ExportTool
             }
         }
 
+        public static List<Client> ReadClientsFromCsv(string[] paths)
+        {
+            
+            List<Client> clients = new List<Client>();
+            
+            string fullPath = Path.Combine(paths);
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
+            {
+                using (StreamReader streamReader = new StreamReader(fileStream))
+                {
+                    using (var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                    {
+                        while (reader.Read())
+                        { 
+                            clients.Add(reader.GetRecord<Client>());
+                        }
+                    }
+                }
+            }
+            return clients;
+        }
     }
 }
