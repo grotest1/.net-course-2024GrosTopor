@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.Domain.Models;
+﻿using BankSystem.Domain.Models;
 
 namespace BankSystem.App.Services
 {
