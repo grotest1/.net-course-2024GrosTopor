@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Data
 {
-    public class BankSystemDbContext : DbContext, IDisposable
+    public class BankSystemDbContext : DbContext
     {
         public DbSet<Client> Clients => Set<Client>();
         public DbSet<Employee> Employees => Set<Employee>();
