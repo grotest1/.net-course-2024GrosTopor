@@ -28,6 +28,5 @@ namespace BankSystem.Data
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

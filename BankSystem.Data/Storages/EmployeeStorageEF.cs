@@ -2,7 +2,7 @@
 
 namespace BankSystem.Data.Storages
 {
-    public class EmployeeStorageEF : IStorage<Employee>
+    public class EmployeeStorageEF : IStorage<Employee>, IDisposable
     {
         private readonly BankSystemDbContext db = new BankSystemDbContext();
 
@@ -38,6 +38,11 @@ namespace BankSystem.Data.Storages
         public List<Employee> Get(Func<Employee, bool> filter)
         {
             return db.Employees.Where(filter).ToList();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

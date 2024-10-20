@@ -2,7 +2,7 @@
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorageEF : IClientStorage
+    public class ClientStorageEF : IClientStorage, IDisposable
     {
         private readonly BankSystemDbContext db = new BankSystemDbContext();
 
@@ -63,6 +63,11 @@ namespace BankSystem.Data.Storages
         public List<Account> GetAccount(Func<Account, bool> filter)
         {
             return db.Accounts.Where(filter).ToList();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }
