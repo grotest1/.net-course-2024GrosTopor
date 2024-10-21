@@ -1,9 +1,10 @@
-﻿using BankSystem.Domain.Models;
+﻿using Bogus.Bson;
 using CsvHelper;
 using CsvHelper.Configuration;
-using System.Formats.Asn1;
+using Newtonsoft.Json;
 using System.Globalization;
-using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
 
 namespace ExportTool
 {
@@ -77,8 +78,55 @@ namespace ExportTool
             }
             return items;
         }
-    
-    
+
+
+        public static void WriteElementsToJSON<TElement>(List<TElement> items, string[] pathToDirectory, string fileName) where TElement : class
+        {
+            if (pathToDirectory.Length == 0)
+                throw new FormatException("Некорректный путь директории.");
+
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
+
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                {
+                    streamWriter.Write(JsonConvert.SerializeObject(items));
+                }
+            }
+        }
+
+
+        public static List<TElement> ReadElementsFromJSON<TElement>(string[] pathToDirectory, string fileName) where TElement : class
+        {
+            if (pathToDirectory.Length == 0)
+                throw new FormatException("Некорректный путь директории.");
+
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
+
+            List<TElement> items = new List<TElement>();
+
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.Open))
+            {
+                using (StreamReader streamReader = new StreamReader(fileStream))
+                {
+                    items = JsonConvert.DeserializeObject<List<TElement>>(streamReader.ReadToEnd());
+                }
+            }
+            return items;
+        }
+
+
+
+
         private static void BasicVerification(string[] pathToDirectory, string fileName)
         {
             if (pathToDirectory.Length == 0)
