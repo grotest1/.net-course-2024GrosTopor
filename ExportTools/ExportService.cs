@@ -139,7 +139,7 @@ namespace ExportTool
                     break;
                 }
                 else
-                    extentionString = (extentionString == "" ? "." : " или .") + extention;
+                    extentionString += (extentionString == "" ? "." : " или .") + extention;
             }
             if (!goodExtention) 
                 throw new FormatException($"Некорректный формат файла. Требуется {extentionString}");
