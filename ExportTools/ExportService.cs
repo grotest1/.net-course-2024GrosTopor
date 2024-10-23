@@ -1,9 +1,8 @@
-﻿using BankSystem.Domain.Models;
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
-using System.Formats.Asn1;
+using Newtonsoft.Json;
 using System.Globalization;
-using System.Xml.Linq;
+
 
 namespace ExportTool
 {
@@ -11,7 +10,7 @@ namespace ExportTool
     {
         public static void WriteElementsToCsv<TElement>(List<TElement> items, string[] pathToDirectory, string fileName, char delimiter = ';') where TElement : class
         {
-            BasicVerification(pathToDirectory, fileName);
+            BasicVerification(pathToDirectory, fileName, new string[] { "csv" });
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
             if (!dirInfo.Exists)
@@ -49,7 +48,7 @@ namespace ExportTool
 
         public static List<TElement> ReadElementsFromCsv<TElement>(string[] pathToDirectory, string fileName, char delimiter = ';') where TElement : class
         {
-            BasicVerification(pathToDirectory, fileName);
+            BasicVerification(pathToDirectory, fileName, new string[] { "csv" });
 
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
 
@@ -77,15 +76,73 @@ namespace ExportTool
             }
             return items;
         }
-    
-    
-        private static void BasicVerification(string[] pathToDirectory, string fileName)
+
+
+        public static void WriteElementsToJSON<TElement>(List<TElement> items, string[] pathToDirectory, string fileName) where TElement : class
+        {
+            BasicVerification(pathToDirectory, fileName, new string[] { "txt", "json" });
+
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
+
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                {
+                    streamWriter.Write(JsonConvert.SerializeObject(items));
+                }
+            }
+        }
+
+
+        public static List<TElement> ReadElementsFromJSON<TElement>(string[] pathToDirectory, string fileName) where TElement : class
+        {
+            BasicVerification(pathToDirectory, fileName, new string[] { "txt", "json" });
+
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+
+            string fullPath = Path.Combine(dirInfo.FullName, fileName);
+
+            List<TElement> items = new List<TElement>();
+
+            using (FileStream fileStream = new FileStream(fullPath, FileMode.Open))
+            {
+                using (StreamReader streamReader = new StreamReader(fileStream))
+                {
+                    string jsonStatham = streamReader.ReadToEnd();
+                    if (!string.IsNullOrEmpty(jsonStatham))
+                        items = JsonConvert.DeserializeObject<List<TElement>>(jsonStatham);
+                }
+            }
+            return items;
+        }
+
+
+        private static void BasicVerification(string[] pathToDirectory, string fileName, string[] extensions)
         {
             if (pathToDirectory.Length == 0)
                 throw new FormatException("Некорректный путь директории.");
 
-            if (!fileName.EndsWith(".csv"))
-                throw new FormatException("Некорректный формат файла. Требуется '.csv'");
+
+            bool goodExtention = false;
+            string extentionString = "";
+            foreach (string extention in extensions)
+            {
+                if (fileName.EndsWith($".{extention}"))
+                { 
+                    goodExtention = true;
+                    break;
+                }
+                else
+                    extentionString += (extentionString == "" ? "." : " или .") + extention;
+            }
+            if (!goodExtention) 
+                throw new FormatException($"Некорректный формат файла. Требуется {extentionString}");
         }
 
     }
