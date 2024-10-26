@@ -70,8 +70,6 @@ namespace ExportToolsTests
 
             });
 
-
-
             string[] pathToDirectory = ["C:", "1", "2"];
             DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
             if (!dirInfo.Exists)
@@ -79,43 +77,63 @@ namespace ExportToolsTests
                 dirInfo.Create();
             }
 
-             
 
-            ThreadPool.QueueUserWorkItem(_ =>
+            int countAdd = 0;
+            int fileCounter = 0;
+            long fileStreamLength = 0;
+            List<Client> clientsToFile = new List<Client>();
+
+            while (queue < countClients || conveyor.Count > 0)
             {
-                int fileCounter = 0;
-                long fileStreamLength = 0;
+                while (conveyor.Count == 0)
+                    Thread.Sleep(200);
 
-                while (queue < countClients)
+                if (fileStreamLength > 10000)
                 {
-               
-                    while (conveyor.Count == 0)
-                        Thread.Sleep(200);
-
-                    Client clientToFile;
-                    lock (lockerСonveyor)
-                    {
-                        clientToFile = conveyor.Dequeue();
-                    }
-
-                    if (fileStreamLength > 100)
-                        fileCounter++;
-
-                    string fullPath = Path.Combine(dirInfo.FullName, $"conveyor_{fileCounter.ToString()}.json");
-
-                    using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(fileStream))
-                        {
-                            streamWriter.Write(JsonConvert.SerializeObject(clientToFile));
-                        }
-
-                        fileStreamLength = fileStream.Length;
-                    }
-                
-                    Thread.Sleep(800);
+                    fileCounter++;
+                    clientsToFile.Clear();
                 }
-            });            
+
+                lock (lockerСonveyor)
+                {
+                    clientsToFile.Add(conveyor.Dequeue());
+                }
+
+                string fullPath = Path.Combine(dirInfo.FullName, $"conveyor_{fileCounter.ToString()}.json");
+
+                using (FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate))
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                    {
+                        streamWriter.Write(JsonConvert.SerializeObject(clientsToFile)); 
+                        countAdd++;
+                        fileStreamLength = streamWriter.BaseStream.Length;
+                    }
+                }
+                
+            }
+
+            Assert.True(countAdd == countClients);
         }
+
+        [Fact]
+        public void TestСonveyorProcessingClients()
+        {
+
+            string[] pathToDirectory = ["C:", "1", "2"];
+            DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(pathToDirectory));
+            Assert.True(dirInfo.Exists);
+
+            FileInfo[] files = dirInfo.GetFiles();
+            if(files.Length > 0)
+            {
+                foreach(FileInfo file in files)
+                {
+                    List<Client> clients = ExportService.ReadElementsFromJSON<Client>(pathToDirectory, file.Name);
+                    Assert.NotEmpty(clients);
+                }
+            }
+        }
+
     }
 }
