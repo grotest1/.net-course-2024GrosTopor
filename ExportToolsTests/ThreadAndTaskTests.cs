@@ -3,6 +3,7 @@ using Xunit;
 using ExportTool;
 using BankSystem.App.Services;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ExportToolsTests
 {
@@ -19,22 +20,23 @@ namespace ExportToolsTests
             Queue<Client> conveyor = [];
             int addedToConveyor = 0;
 
+            const int MAXFILESIZE = 10000;
+
             var lockerСonveyor = new object();
 
             Random pauseMS = new Random();
             WaitCallback waitCallback = delegate (object? clientsObj)
             {
-                if (clientsObj is List<Client> clients)
+                List<Client> clients = (List<Client>)clientsObj;
+
+                for (int i = 0; i < clients.Count; i++)
                 {
-                    for (int i = 0; i < clients.Count; i++)
+                    lock (lockerСonveyor)
                     {
-                        lock (lockerСonveyor)
-                        {
-                            conveyor.Enqueue(clients[i]);
-                            addedToConveyor++;
-                        }
-                        Thread.Sleep(pauseMS.Next(10, 300));
+                        conveyor.Enqueue(clients[i]);
+                        addedToConveyor++;
                     }
+                    Thread.Sleep(pauseMS.Next(10, 300));
                 }
             };
             ThreadPool.QueueUserWorkItem(waitCallback, clients1);
@@ -59,7 +61,7 @@ namespace ExportToolsTests
                 while (conveyor.Count == 0)
                     Thread.Sleep(200);
 
-                if (fileStreamLength > 10000)
+                if (fileStreamLength > MAXFILESIZE)
                 {
                     fileCounter++;
                     clientsToFile.Clear();
@@ -131,7 +133,7 @@ namespace ExportToolsTests
             while (completed < 2)
                 Thread.Sleep(100);
                
-            Assert.True(account.Amount == 2000);
+            Assert.Equal(2000, account.Amount);
         }
 
     }
