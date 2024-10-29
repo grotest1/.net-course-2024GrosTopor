@@ -14,7 +14,7 @@ namespace ExportToolsTests
             using (ClientStorageEF clientStorageEF = new ClientStorageEF())
             {
                 ClientService clientService = new ClientService(clientStorageEF);
-                List<Client> clients = clientService.GetClients(c => true);
+                List<Client> clients = clientService.GetClientsAsync(c => true);
                 string[] path = { "C:", "1", "2"};
 
                 ExportService.WriteElementsToCsv<Client>(clients, path, "test.csv");
@@ -27,7 +27,7 @@ namespace ExportToolsTests
             using (ClientStorageEF clientStorageEF = new ClientStorageEF())
             {
                 ClientService clientService = new ClientService(clientStorageEF);
-                List<Client> clients = clientService.GetClients(c => true);
+                List<Client> clients = clientService.GetClientsAsync(c => true);
                 string[] path = { "C:", "1", "2" };
 
                 Assert.Throws<FormatException>(() => ExportService.WriteElementsToCsv<Client>(clients, path, "test.txt"));   
@@ -60,7 +60,7 @@ namespace ExportToolsTests
             using (ClientStorageEF clientStorageEF = new ClientStorageEF())
             {
                 ClientService clientService = new ClientService(clientStorageEF);
-                List<Client> clients = clientService.GetClients(c => true);
+                List<Client> clients = clientService.GetClientsAsync(c => true);
                 string[] path = { "C:", "1", "2" };
                 
                 Assert.Throws<FormatException>(() => ExportService.WriteElementsToJSON<Client>(clients, path, "test.jpg"));
@@ -73,7 +73,7 @@ namespace ExportToolsTests
             using (ClientStorageEF clientStorageEF = new ClientStorageEF())
             {
                 ClientService clientService = new ClientService(clientStorageEF);
-                List<Client> clients = clientService.GetClients(c => true);
+                List<Client> clients = clientService.GetClientsAsync(c => true);
                 string[] path = { "C:", "1", "2" };
 
                 ExportService.WriteElementsToJSON<Client>(clients, path, "test.json");

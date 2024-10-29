@@ -13,7 +13,7 @@ namespace BankSystem.App.Services
             _employeeStorage = employeeStorage;
         }
 
-        public void AddEmployee(Employee employee)
+        public async Task AddEmployeeAsync(Employee employee)
         {
             if (string.IsNullOrEmpty(employee.Name))
                 throw new EmptyRequiredDataException("Name");
@@ -22,30 +22,30 @@ namespace BankSystem.App.Services
             else if (string.IsNullOrEmpty(employee.Passport))
                 throw new EmptyRequiredDataException("Passport");
 
-            _employeeStorage.Add(employee);
+            await Task.Run(() => _employeeStorage.Add(employee));
         }
 
-        public void UpdateEmployee(Employee employee)
+        public async Task UpdateEmployeeAsync(Employee employee)
         {
-            if (GetEmployee(employee.Id) == null)
+            if (GetEmployeeAsync(employee.Id).Result == null)
                 throw new MissingDataException("Сотрудник не найден");
 
-            _employeeStorage.Update(employee);
+            await Task.Run(() => _employeeStorage.Update(employee));
         }
 
-        public void DeleteEmployee(Employee employee)
+        public async Task DeleteEmployeeAsync(Employee employee)
         {
-            _employeeStorage.Delete(employee);
+            await Task.Run(() => _employeeStorage.Delete(employee));
         }
 
-        public Employee? GetEmployee(Guid employeeId)
+        public async Task<Employee?> GetEmployeeAsync(Guid employeeId)
         {
-            return _employeeStorage.Get(c => c.Id == employeeId).FirstOrDefault();
+            return await Task.Run(() => _employeeStorage.Get(c => c.Id == employeeId).FirstOrDefault());
         }
 
-        public List<Employee> GetEmployees(Func<Employee, bool> predicate)
+        public async Task<List<Employee>> GetEmployeesAsync(Func<Employee, bool> predicate)
         {
-            return _employeeStorage.Get(predicate);
+            return await Task.Run(() => _employeeStorage.Get(predicate));
         }
     }
 }
