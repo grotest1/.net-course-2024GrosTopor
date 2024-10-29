@@ -73,5 +73,24 @@ namespace BankSystem.App.Services
         {
             return _clientStorage.GetAccount(a => a.Id == idAccount).FirstOrDefault();
         }
+
+        public void CashOut(Account account, int summ, CancellationToken token)
+        {
+            Task.Run(() =>
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (summ > account.Amount)
+                    throw new RemainerMoneyException(account.Amount, summ);
+                
+                account.Amount -= summ;
+                _clientStorage.UpdateAccount(account);
+            }, token);
+
+        }
+
     }
 }

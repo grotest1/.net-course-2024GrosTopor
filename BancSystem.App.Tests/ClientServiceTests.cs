@@ -141,5 +141,23 @@ namespace BancSystem.App.Tests
             Assert.Equal(1, clients?.Count);
             Assert.Equal(client2, clients?[0]);
         }
+
+        [Fact]
+        public void CashOutPositiveTest()
+        {
+            ClientService clientService = new ClientService(new ClientStorageEF());
+            Client client = new Client() { Name = "Ричард", Passport = "EHGN 111", Age = 25 };
+            clientService.AddClient(client);
+            Account account = new Account() { Amount = 159, Currency = new Currency() { Code = 501, Name = "фантики" }, Client = client };
+            clientService.AddAccount(client, account);
+
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+
+
+            clientService.CashOut(account, 59, token);
+
+            Assert.Equal(100, account.Amount);
+        }
     }
 }
