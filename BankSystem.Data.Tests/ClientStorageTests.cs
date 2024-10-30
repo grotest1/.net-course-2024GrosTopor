@@ -11,8 +11,8 @@ namespace BankSystem.Data.Tests
         {
             ClientStorageEF clientStorage = new ClientStorageEF();
 
-            clientStorage.Add(new Client { Name = "Ионел" });
-            int count = clientStorage.Get(e => true).Count();
+            clientStorage.AddAsync(new Client { Name = "Ионел" });
+            int count = clientStorage.GetAsync(e => true).Result.Count();
 
             Assert.Equal(1, count);
         }

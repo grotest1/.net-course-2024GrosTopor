@@ -9,82 +9,82 @@ namespace BancSystem.App.Tests
     public class EmployeeServiceTests
     {
         [Fact]
-        public async Task AddEmployeePositivTestAsync()
+        public void AddEmployeePositivTest()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
 
-            int countBefore = employeeService.GetEmployeesAsync(e => true).Result.Count();
-            await employeeService.AddEmployeeAsync(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
-            int countAfter = employeeService.GetEmployeesAsync(e => true).Result.Count();
+            int countBefore = employeeService.GetEmployees(e => true).Count();
+            employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25 });
+            int countAfter = employeeService.GetEmployees(e => true).Count();
 
             Assert.True(countBefore + 1 == countAfter);
         }
 
         [Fact]
-        public async Task AddEmployeeNegativeTestByAge()
+        public void AddEmployeeNegativeTestByAge()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
 
-            await Assert.ThrowsAsync<UnderAgeException>(() => employeeService.AddEmployeeAsync(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
+            Assert.Throws<UnderAgeException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 15 }));
         }
 
         [Fact]
-        public async Task AddEmployeeNegativeTestByPassport()
+        public void AddEmployeeNegativeTestByPassport()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
 
-            await Assert.ThrowsAsync<EmptyRequiredDataException>(() => employeeService.AddEmployeeAsync(new Employee() { Name = "Ричард", Passport = "", Age = 35 }));
+            Assert.Throws<EmptyRequiredDataException>(() => employeeService.AddEmployee(new Employee() { Name = "Ричард", Passport = "", Age = 35 }));
         }
 
         [Fact]
-        public async Task GetEmployeeByNamePositivTestAsync()
+        public void GetEmployeeByNamePositivTest()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
-            await employeeService.AddEmployeeAsync(employee);
+            employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeesAsync(c => c.Name == employee.Name).Result.FirstOrDefault();
+            Employee? findEmployee = employeeService.GetEmployees(c => c.Name == employee.Name).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
 
         [Fact]
-        public async Task GetEmployeeByPhonePositivTestAsync()
+        public void GetEmployeeByPhonePositivTest()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
-            await employeeService.AddEmployeeAsync(employee);
+            employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeesAsync(c => c.PersonalPhoneNumber == employee.PersonalPhoneNumber).Result.FirstOrDefault();
+            Employee? findEmployee = employeeService.GetEmployees(c => c.PersonalPhoneNumber == employee.PersonalPhoneNumber).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
 
         [Fact]
-        public async Task GetEmployeeByPassportPositivTestAsync()
+        public void GetEmployeeByPassportPositivTest()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
             Employee employee = new Employee() { Name = "Ричард", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 12) };
-            await employeeService.AddEmployeeAsync(employee);
+            employeeService.AddEmployee(employee);
 
-            Employee? findEmployee = employeeService.GetEmployeesAsync(c => c.Passport == employee.Passport).Result.FirstOrDefault();
+            Employee? findEmployee = employeeService.GetEmployees(c => c.Passport == employee.Passport).FirstOrDefault();
 
             Assert.Equal(employee, findEmployee);
         }
 
         [Fact]
-        public async Task GetEmployeesByBirthdayRangePositivTestAsync()
+        public void GetEmployeesByBirthdayRangePositivTest()
         {
             EmployeeService employeeService = new EmployeeService(new EmployeeStorageEF());
             Employee employee1 = new Employee() { Name = "Ричард1", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1999, 12, 22) };
-            await employeeService.AddEmployeeAsync(employee1);
+            employeeService.AddEmployee(employee1);
             Employee employee2 = new Employee() { Name = "Ричард2", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(2020, 01, 12) };
-            await employeeService.AddEmployeeAsync(employee2);
+            employeeService.AddEmployee(employee2);
             Employee employee3 = new Employee() { Name = "Ричард3", Passport = "EHGN 111", Age = 25, PersonalPhoneNumber = "77755544", Birthday = new DateOnly(1995, 05, 19) };
-            await employeeService.AddEmployeeAsync(employee3);
+            employeeService.AddEmployee(employee3);
 
-            List<Employee> employees = employeeService.GetEmployeesAsync(c => c.Birthday >= new DateOnly(2019, 1, 1) && c.Birthday <= new DateOnly(2022, 1, 1)).Result;
-            
+            List<Employee> employees = employeeService.GetEmployees(c => c.Birthday >= new DateOnly(2019, 1, 1) && c.Birthday <= new DateOnly(2022, 1, 1));
+
             Assert.Equal(employee2, employees?[0]);
         }
     }

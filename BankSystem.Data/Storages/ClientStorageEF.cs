@@ -6,63 +6,78 @@ namespace BankSystem.Data.Storages
     {
         private readonly BankSystemDbContext db = new BankSystemDbContext();
 
-        public void Add(Client client)
+        public async Task AddAsync(Client client)
         {
-            db.Clients.Add(client);
-            db.SaveChanges();
-        }
-
-        public void Update(Client client)
-        {
-            Client? findClient = db.Clients.FirstOrDefault(c => c.Id == client.Id);
-            if (findClient != null)
+            await Task.Run(() =>
             {
-                findClient.Age = client.Age;
-                findClient.Name = client.Name;
-                findClient.Surname = client.Surname;
-                findClient.Passport = client.Passport;
-                findClient.PersonalPhoneNumber = client.PersonalPhoneNumber;
-
+                db.Clients.Add(client);
                 db.SaveChanges();
-            }
+            });
         }
 
-        public void Delete(Client client)
+        public async Task UpdateAsync(Client client)
         {
-            db.Clients.Remove(client);
-            db.SaveChanges();
-        }
-
-        public List<Client> Get(Func<Client, bool> filter)
-        {
-            return db.Clients.Where(filter).ToList();
-        }
-
-        public void AddAccount(Client client, Account account)
-        {
-            account.Client = client;
-            db.Accounts.Add(account);
-            db.SaveChanges();
-        }
-
-        public void UpdateAccount(Account account)
-        {
-            Account? findAccount = db.Accounts.FirstOrDefault(a => a.Id == account.Id);
-            if (findAccount != null)
+            await Task.Run(() =>
             {
-                findAccount.Amount = account.Amount;
+                Client? findClient = db.Clients.FirstOrDefault(c => c.Id == client.Id);
+                if (findClient != null)
+                {
+                    findClient.Age = client.Age;
+                    findClient.Name = client.Name;
+                    findClient.Surname = client.Surname;
+                    findClient.Passport = client.Passport;
+                    findClient.PersonalPhoneNumber = client.PersonalPhoneNumber;
+
+                    db.SaveChanges();
+                }
+            });
+        }
+
+        public async Task DeleteAsync(Client client)
+        {
+            await Task.Run(() =>
+            {
+                db.Clients.Remove(client);
                 db.SaveChanges();
-            }
+            });
         }
 
-        public void DeleteAccount(Account account)
+        public async Task<List<Client>> GetAsync(Func<Client, bool> filter)
         {
-            db.Accounts.Remove(account);
+            return await Task.Run(() => db.Clients.Where(filter).ToList());
         }
 
-        public List<Account> GetAccount(Func<Account, bool> filter)
+        public async Task AddAccountAsync(Client client, Account account)
         {
-            return db.Accounts.Where(filter).ToList();
+            await Task.Run(() =>
+            {
+                account.Client = client;
+                db.Accounts.Add(account);
+                db.SaveChanges();
+            });
+        }
+
+        public async Task UpdateAccountAsync(Account account)
+        {
+            await Task.Run(() =>
+            {
+                Account? findAccount = db.Accounts.FirstOrDefault(a => a.Id == account.Id);
+                if (findAccount != null)
+                {
+                    findAccount.Amount = account.Amount;
+                    db.SaveChanges();
+                }
+            });
+        }
+
+        public async Task DeleteAccountAsync(Account account)
+        {
+            await Task.Run(() => db.Accounts.Remove(account));
+        }
+
+        public async Task<List<Account>> GetAccountAsync(Func<Account, bool> filter)
+        {
+            return await Task.Run(() => db.Accounts.Where(filter).ToList());
         }
 
         public void Dispose()

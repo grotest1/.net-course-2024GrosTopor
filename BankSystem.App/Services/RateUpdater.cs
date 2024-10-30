@@ -14,13 +14,24 @@ namespace BankSystem.App.Services
 
         public async Task CalculateInterestRateAsync(CancellationToken token) 
         {
+            const int DAYMS = 24 * 60 * 60 * 1000;
+
             while (true)
             {
-                List<Account> accounts = _clientStorage.GetAccount(a => a.DateOpen.Day == DateTime.Now.Day);
+                try
+                {
+                    token.ThrowIfCancellationRequested();
 
-                Parallel.ForEach<Account>(accounts, (account) => account.Amount += account.Amount * 2 / 100);
-                
-                await Task.Delay(24*60*60*1000, token);
+                    List<Account> accounts = _clientStorage.GetAccountAsync(a => a.DateOpen.Day == DateTime.Now.Day).Result;
+
+                    Parallel.ForEach<Account>(accounts, (account) => account.Amount += account.Amount * 2 / 100);
+
+                    await Task.Delay(DAYMS, token);
+                }
+                catch (Exception ex)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
             }
         }
         

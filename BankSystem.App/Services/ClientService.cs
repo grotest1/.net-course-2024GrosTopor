@@ -12,9 +12,9 @@ namespace BankSystem.App.Services
             _clientStorage = clientStorage;
         }
 
-        public async Task AddClientAsync(Client client)
+        public void AddClient(Client client)
         {
-            
+
             if (string.IsNullOrEmpty(client.Name))
                 throw new EmptyRequiredDataException("Name");
             else if (client.Age < 18)
@@ -24,56 +24,54 @@ namespace BankSystem.App.Services
 
             Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" }, Client = client };
 
-            await Task.Run(() => { 
-                _clientStorage.Add(client);
-                _clientStorage.AddAccount(client, defaultAccount);
-            });
+            _clientStorage.AddAsync(client);
+            _clientStorage.AddAccountAsync(client, defaultAccount);
         }
 
-        public async Task UpdateClientAsync(Client client)
+        public void UpdateClient(Client client)
         {
-            if (GetClientAsync(client.Id) == null)
+            if (GetClient(client.Id) == null)
                 throw new MissingDataException("Клиент не найден");
 
-            await Task.Run(() => _clientStorage.Update(client));
+            _clientStorage.UpdateAsync(client);
         }
 
-        public async Task DeleteClientAsync(Client client)
+        public void DeleteClient(Client client)
         {
-            await Task.Run(() => _clientStorage.Delete(client));
+            _clientStorage.DeleteAsync(client);
         }
 
 
-        public async Task<Client?> GetClientAsync(Guid clientId)
+        public Client? GetClient(Guid clientId)
         {
-            return await Task.Run(() => _clientStorage.Get(c => c.Id == clientId).FirstOrDefault());
+            return _clientStorage.GetAsync(c => c.Id == clientId).Result.FirstOrDefault();
         }
 
-        public async Task<List<Client>> GetClientsAsync(Func<Client, bool> predicate)
+        public List<Client> GetClients(Func<Client, bool> predicate)
         {
-            return await Task.Run(() => _clientStorage.Get(predicate));
+            return _clientStorage.GetAsync(predicate).Result;
         }
 
-        public async Task AddAccountAsync(Client client, Account account)
+        public void AddAccount(Client client, Account account)
         {
             if (account.Currency.Code == 0)
                 throw new EmptyRequiredDataException("Currency.Code");
             else if (string.IsNullOrEmpty(account.Currency.Name))
                 throw new EmptyRequiredDataException("Currency.Name");
 
-            await Task.Run(() => _clientStorage.AddAccount(client, account));
+            _clientStorage.AddAccountAsync(client, account);
         }
-        public async Task UpdateAccountAsync(Account account)
+        public void UpdateAccount(Account account)
         {
-            if (_clientStorage.GetAccount(a => a.Id == account.Id).Count == 0)
+            if (_clientStorage.GetAccountAsync(a => a.Id == account.Id).Result.Count == 0)
                 throw new MissingDataException("Лицевой счет не найден");
 
-            await Task.Run(() => _clientStorage.UpdateAccount(account));
+            _clientStorage.UpdateAccountAsync(account);
         }
 
-        public async Task<Account?> GetClientAccountAsync(Guid idAccount)
+        public Account? GetClientAccount(Guid idAccount)
         {
-            return await Task.Run(() => _clientStorage.GetAccount(a => a.Id == idAccount).FirstOrDefault());
+            return _clientStorage.GetAccountAsync(a => a.Id == idAccount).Result.FirstOrDefault();
         }
 
         public void CashOut(Account account, int summ, CancellationToken token)
@@ -89,7 +87,7 @@ namespace BankSystem.App.Services
                     throw new RemainerMoneyException(account.Amount, summ);
                 
                 account.Amount -= summ;
-                _clientStorage.UpdateAccount(account);
+                _clientStorage.UpdateAccountAsync(account);
             }, token);
         }
     }

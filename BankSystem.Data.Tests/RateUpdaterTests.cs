@@ -14,7 +14,7 @@ namespace BankSystem.Data.Tests
     public class RateUpdaterTests
     {
         [Fact]
-        public void CalculateInterestRateAsyncTest()
+        public async void CalculateInterestRateAsyncTest()
         {
             RateUpdater rateUpdater = new RateUpdater(new ClientStorageEF());
 
@@ -22,6 +22,11 @@ namespace BankSystem.Data.Tests
             CancellationToken token = cancelTokenSource.Token;
 
             Task task = rateUpdater.CalculateInterestRateAsync(token);
+
+            await Task.Delay(1000);
+
+            cancelTokenSource.Cancel();
+            cancelTokenSource.Dispose();
         }
     }
 }

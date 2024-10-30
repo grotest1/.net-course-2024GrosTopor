@@ -13,7 +13,7 @@ namespace BankSystem.App.Services
             _employeeStorage = employeeStorage;
         }
 
-        public async Task AddEmployeeAsync(Employee employee)
+        public void AddEmployee(Employee employee)
         {
             if (string.IsNullOrEmpty(employee.Name))
                 throw new EmptyRequiredDataException("Name");
@@ -22,30 +22,30 @@ namespace BankSystem.App.Services
             else if (string.IsNullOrEmpty(employee.Passport))
                 throw new EmptyRequiredDataException("Passport");
 
-            await Task.Run(() => _employeeStorage.Add(employee));
+            _employeeStorage.AddAsync(employee);
         }
 
-        public async Task UpdateEmployeeAsync(Employee employee)
+        public void UpdateEmployee(Employee employee)
         {
-            if (GetEmployeeAsync(employee.Id).Result == null)
+            if (GetEmployee(employee.Id) == null)
                 throw new MissingDataException("Сотрудник не найден");
 
-            await Task.Run(() => _employeeStorage.Update(employee));
+            _employeeStorage.UpdateAsync(employee);
         }
 
-        public async Task DeleteEmployeeAsync(Employee employee)
+        public void DeleteEmployee(Employee employee)
         {
-            await Task.Run(() => _employeeStorage.Delete(employee));
+            _employeeStorage.DeleteAsync(employee);
         }
 
-        public async Task<Employee?> GetEmployeeAsync(Guid employeeId)
+        public Employee? GetEmployee(Guid employeeId)
         {
-            return await Task.Run(() => _employeeStorage.Get(c => c.Id == employeeId).FirstOrDefault());
+            return _employeeStorage.GetAsync(c => c.Id == employeeId).Result.FirstOrDefault();
         }
 
-        public async Task<List<Employee>> GetEmployeesAsync(Func<Employee, bool> predicate)
+        public List<Employee> GetEmployees(Func<Employee, bool> predicate)
         {
-            return await Task.Run(() => _employeeStorage.Get(predicate));
+            return _employeeStorage.GetAsync(predicate).Result;
         }
     }
 }

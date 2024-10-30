@@ -11,9 +11,9 @@ namespace BankSystem.Data.Tests
         {
             EmployeeStorageEF employeeStorage = new EmployeeStorageEF();
                 
-            employeeStorage.Add(new Employee() { Name = "Tom", Age = 30});
+            employeeStorage.AddAsync(new Employee() { Name = "Tom", Age = 30});
 
-            int count = employeeStorage.Get(e => true).Count();
+            int count = employeeStorage.GetAsync(e => true).Result.Count();
 
             Assert.Equal(1, count);
         }

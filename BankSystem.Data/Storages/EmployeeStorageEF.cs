@@ -6,38 +6,47 @@ namespace BankSystem.Data.Storages
     {
         private readonly BankSystemDbContext db = new BankSystemDbContext();
 
-        public void Add(Employee employee)
+        public async Task AddAsync(Employee employee)
         {
-            db.Employees.Add(employee);
-            db.SaveChanges();
-        }
-
-        public void Update(Employee employee)
-        {
-            Employee? findEmployee = db.Employees.FirstOrDefault(c => c.Id == employee.Id);
-            if (findEmployee != null)
+            await Task.Run(() =>
             {
-                findEmployee.Age = employee.Age;
-                findEmployee.Name = employee.Name;
-                findEmployee.Surname = employee.Surname;
-                findEmployee.Passport = employee.Passport;
-                findEmployee.PersonalPhoneNumber = employee.PersonalPhoneNumber;
-                findEmployee.Passport = employee.Passport;
-                findEmployee.Contract = employee.Contract;
-                
+                db.Employees.Add(employee);
                 db.SaveChanges();
-            }
+            });
         }
 
-        public void Delete(Employee employee)
+        public async Task UpdateAsync(Employee employee)
         {
-            db.Employees.Remove(employee);
-            db.SaveChanges();
+            await Task.Run(() =>
+            {
+                Employee? findEmployee = db.Employees.FirstOrDefault(c => c.Id == employee.Id);
+                if (findEmployee != null)
+                {
+                    findEmployee.Age = employee.Age;
+                    findEmployee.Name = employee.Name;
+                    findEmployee.Surname = employee.Surname;
+                    findEmployee.Passport = employee.Passport;
+                    findEmployee.PersonalPhoneNumber = employee.PersonalPhoneNumber;
+                    findEmployee.Passport = employee.Passport;
+                    findEmployee.Contract = employee.Contract;
+
+                    db.SaveChanges();
+                }
+            });
         }
 
-        public List<Employee> Get(Func<Employee, bool> filter)
+        public async Task DeleteAsync(Employee employee)
         {
-            return db.Employees.Where(filter).ToList();
+            await Task.Run(() =>
+            {
+                db.Employees.Remove(employee);
+                db.SaveChanges();
+            });
+        }
+
+        public async Task<List<Employee>> GetAsync(Func<Employee, bool> filter)
+        {
+            return await Task.Run(() => db.Employees.Where(filter).ToList());
         }
 
         public void Dispose()
