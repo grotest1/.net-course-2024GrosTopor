@@ -4,9 +4,9 @@ namespace BankSystem.Data.Storages
 {
     public interface IClientStorage : IStorage<Client>
     {
-        public void AddAccount(Client client, Account account);
-        public void UpdateAccount(Account account);
-        public void DeleteAccount(Account account);
-        public List<Account> GetAccount(Func<Account, bool> filter);
+        public Task AddAccountAsync(Client client, Account account);
+        public Task UpdateAccountAsync(Account account);
+        public Task DeleteAccountAsync(Account account);
+        public Task<List<Account>> GetAccountAsync(Func<Account, bool> filter);
     }
 }

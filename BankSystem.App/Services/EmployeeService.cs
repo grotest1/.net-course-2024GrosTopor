@@ -22,7 +22,7 @@ namespace BankSystem.App.Services
             else if (string.IsNullOrEmpty(employee.Passport))
                 throw new EmptyRequiredDataException("Passport");
 
-            _employeeStorage.Add(employee);
+            _employeeStorage.AddAsync(employee);
         }
 
         public void UpdateEmployee(Employee employee)
@@ -30,22 +30,22 @@ namespace BankSystem.App.Services
             if (GetEmployee(employee.Id) == null)
                 throw new MissingDataException("Сотрудник не найден");
 
-            _employeeStorage.Update(employee);
+            _employeeStorage.UpdateAsync(employee);
         }
 
         public void DeleteEmployee(Employee employee)
         {
-            _employeeStorage.Delete(employee);
+            _employeeStorage.DeleteAsync(employee);
         }
 
         public Employee? GetEmployee(Guid employeeId)
         {
-            return _employeeStorage.Get(c => c.Id == employeeId).FirstOrDefault();
+            return _employeeStorage.GetAsync(c => c.Id == employeeId).Result.FirstOrDefault();
         }
 
         public List<Employee> GetEmployees(Func<Employee, bool> predicate)
         {
-            return _employeeStorage.Get(predicate);
+            return _employeeStorage.GetAsync(predicate).Result;
         }
     }
 }

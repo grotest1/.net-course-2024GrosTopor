@@ -84,7 +84,7 @@ namespace BancSystem.App.Tests
             employeeService.AddEmployee(employee3);
 
             List<Employee> employees = employeeService.GetEmployees(c => c.Birthday >= new DateOnly(2019, 1, 1) && c.Birthday <= new DateOnly(2022, 1, 1));
-            
+
             Assert.Equal(employee2, employees?[0]);
         }
     }

@@ -14,7 +14,8 @@ namespace BankSystem.Data.EntityConfigurations
             builder.Property(e => e.ClientId).HasColumnName("client_id");
             builder.Property(e => e.CurrencyId).HasColumnName("currency_id");
             builder.Property(c => c.Amount).IsRequired().HasColumnName("amount");
-            
+            builder.Property(c => c.DateOpen).IsRequired().HasColumnName("date_open");
+
             builder.HasKey(e => e.Id);
 
             builder.HasOne(cl => cl.Client).WithMany(co => co.Accounts).HasForeignKey(cl => cl.ClientId);
