@@ -1,15 +1,26 @@
 ﻿using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
+using System.Threading;
+using AutoMapper;
+using BankSystem.App.Dto;
 
 namespace BankSystem.App.Services
 {
     public class ClientService
     {
         private IClientStorage _clientStorage;
+        private readonly IMapper _mapper;
+
         public ClientService(IClientStorage clientStorage)
         {
             _clientStorage = clientStorage;
+        }        
+        
+        public ClientService(IClientStorage clientStorage, IMapper mapper)
+        {
+            _clientStorage = clientStorage;
+            _mapper = mapper;
         }
 
         public void AddClient(Client client)
@@ -26,6 +37,12 @@ namespace BankSystem.App.Services
 
             _clientStorage.AddAsync(client);
             _clientStorage.AddAccountAsync(client, defaultAccount);
+        }
+
+        public async Task AddClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => AddClient(client));
         }
 
         public void UpdateClient(Client client)
@@ -45,6 +62,12 @@ namespace BankSystem.App.Services
         public Client? GetClient(Guid clientId)
         {
             return _clientStorage.GetAsync(c => c.Id == clientId).Result.FirstOrDefault();
+        }
+
+        public ClientDto? GetClientDto(Guid clientId)
+        {
+            Client? client = GetClient(clientId);
+            return _mapper.Map<ClientDto>(client);
         }
 
         public List<Client> GetClients(Func<Client, bool> predicate)
