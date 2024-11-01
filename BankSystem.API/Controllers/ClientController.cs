@@ -27,8 +27,8 @@ namespace BankSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddClient([FromBody] ClientDto client)
         {
-            await _clientService.AddClientAsync(client);
-            return Ok();
+            Guid clientId = await _clientService.AddClientAsync(client);
+            return Ok(clientId);
         }
 
 

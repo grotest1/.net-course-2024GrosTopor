@@ -9,6 +9,6 @@ namespace BankSystem.Domain.Models
         public int Amount { get; set; }
         public Guid ClientId { get; set; }
         public Client? Client { get; set; }
-        public DateOnly DateOpen { get; set; }
+        public DateOnly DateOpen { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     }
 }

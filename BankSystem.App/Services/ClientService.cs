@@ -17,9 +17,8 @@ namespace BankSystem.App.Services
             _clientStorage = clientStorage;
         }        
         
-        public ClientService(IClientStorage clientStorage, IMapper mapper)
+        public ClientService(IClientStorage clientStorage, IMapper mapper) : this(clientStorage)
         {
-            _clientStorage = clientStorage;
             _mapper = mapper;
         }
 
@@ -35,14 +34,15 @@ namespace BankSystem.App.Services
 
             Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" }, Client = client };
 
-            _clientStorage.AddAsync(client);
+            Task.Run(() => _clientStorage.AddAsync(client)).Wait();
             _clientStorage.AddAccountAsync(client, defaultAccount);
         }
 
-        public async Task AddClientAsync(ClientDto clientDto)
+        public async Task<Guid> AddClientAsync(ClientDto clientDto)
         {
             Client client = _mapper.Map<Client>(clientDto);
             await Task.Run(() => AddClient(client));
+            return client.Id;
         }
 
         public void UpdateClient(Client client)
