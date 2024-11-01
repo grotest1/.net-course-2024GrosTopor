@@ -24,9 +24,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankSystem.Data", "BankSyst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankSystem.Data.Tests", "BankSystem.Data.Tests\BankSystem.Data.Tests.csproj", "{47A5D1AB-AB9C-42D3-ADF0-DB7FA0FE5E92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportTools", "ExportTools\ExportTools.csproj", "{4D9163A2-B39C-40B1-82C0-CB2CE57CF2FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExportTools", "ExportTools\ExportTools.csproj", "{4D9163A2-B39C-40B1-82C0-CB2CE57CF2FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToolsTests", "ExportToolsTests\ExportToolsTests.csproj", "{656A525D-A024-4093-94E0-D21C144A6066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExportToolsTests", "ExportToolsTests\ExportToolsTests.csproj", "{656A525D-A024-4093-94E0-D21C144A6066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankSystem.API", "BankSystem.API\BankSystem.API.csproj", "{EA32F067-5659-42F9-866F-B09C7135A6E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{656A525D-A024-4093-94E0-D21C144A6066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{656A525D-A024-4093-94E0-D21C144A6066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{656A525D-A024-4093-94E0-D21C144A6066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA32F067-5659-42F9-866F-B09C7135A6E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA32F067-5659-42F9-866F-B09C7135A6E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA32F067-5659-42F9-866F-B09C7135A6E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA32F067-5659-42F9-866F-B09C7135A6E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{47A5D1AB-AB9C-42D3-ADF0-DB7FA0FE5E92} = {7FB5AFAE-00AD-4A0E-9E1C-84D3E54A5314}
 		{4D9163A2-B39C-40B1-82C0-CB2CE57CF2FC} = {BCDD88E8-992E-4798-A26E-12FB1F55E5A5}
 		{656A525D-A024-4093-94E0-D21C144A6066} = {BCDD88E8-992E-4798-A26E-12FB1F55E5A5}
+		{EA32F067-5659-42F9-866F-B09C7135A6E6} = {7FB5AFAE-00AD-4A0E-9E1C-84D3E54A5314}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0097849E-39FC-49C1-B05C-98D472240A58}
