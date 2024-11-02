@@ -4,7 +4,7 @@ using BankSystem.App.Dto;
 
 namespace BankSystem.App.Validations
 {
-    public class ClientDtoValidator : AbstractValidator<ClientDto>
+    public class ClientDtoValidator : AbstractValidator<EmployeeDto>
     {
         public ClientDtoValidator()
         {

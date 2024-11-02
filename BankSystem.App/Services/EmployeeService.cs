@@ -1,17 +1,61 @@
 ﻿using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
+using AutoMapper;
+using BankSystem.App.Dto;
 
 namespace BankSystem.App.Services
 {
     public class EmployeeService
     {
         private IStorage<Employee> _employeeStorage;
+        private readonly IMapper _mapper;
 
         public EmployeeService(IStorage<Employee> employeeStorage)
         {
             _employeeStorage = employeeStorage;
         }
+
+
+        public EmployeeService(IStorage<Employee> employeeStorage, IMapper mapper) : this(employeeStorage)
+        {
+            _mapper = mapper;
+        }
+
+        public async Task<Guid> AddEmployeeAsync(EmployeeDto employeeDto)
+        {
+            Employee employeet = _mapper.Map<Employee>(employeeDto);
+            await Task.Run(() => AddEmployee(employeet));
+            return employeet.Id;
+        }
+
+        public async Task UpdateEmployeetAsync(EmployeeDto EmployeetDto)
+        {
+            Employee Employeet = _mapper.Map<Employee>(EmployeetDto);
+            await Task.Run(() => UpdateEmployee(Employeet));
+        }
+
+        public async Task DeleteEmployeetAsync(Guid id)
+        {
+            await Task.Run(() =>
+            {
+                Employee? employeet = GetEmployee(id);
+                DeleteEmployee(employeet);
+            });
+        }
+
+        public EmployeeDto? GetEmployeeDto(Guid employeeId)
+        {
+            Employee? employee = GetEmployee(employeeId);
+            return _mapper.Map<EmployeeDto>(employee);
+        }
+
+        public List<EmployeeDto> GetEmployeesDto()
+        {
+            List<Employee> employees = GetEmployees(c => true);
+            return _mapper.Map<List<EmployeeDto>>(employees);
+        }
+
 
         public void AddEmployee(Employee employee)
         {

@@ -25,7 +25,7 @@ namespace BankSystem.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id:Guid}")]
         public IActionResult GetClient(Guid id)
         {
             var response = _clientService.GetClientDto(id);

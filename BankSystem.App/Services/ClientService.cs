@@ -22,6 +22,42 @@ namespace BankSystem.App.Services
             _mapper = mapper;
         }
 
+        public async Task<Guid> AddClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => AddClient(client));
+            return client.Id;
+        }
+
+        public async Task UpdateClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => UpdateClient(client));
+        }
+
+        public async Task DeleteClientAsync(Guid id)
+        {
+            await Task.Run(() =>
+            {
+                Client? client = GetClient(id);
+                DeleteClient(client);
+            });
+        }
+
+        public ClientDto? GetClientDto(Guid clientId)
+        {
+            Client? client = GetClient(clientId);
+            return _mapper.Map<ClientDto>(client);
+        }
+
+        public List<ClientDto> GetClientsDto()
+        {
+            List<Client> clients = GetClients(c => true);
+            return _mapper.Map<List<ClientDto>>(clients);
+        }
+
+
+
         public void AddClient(Client client)
         {
 
@@ -38,26 +74,6 @@ namespace BankSystem.App.Services
             _clientStorage.AddAccountAsync(client, defaultAccount);
         }
 
-        public async Task<Guid> AddClientAsync(ClientDto clientDto)
-        {
-            Client client = _mapper.Map<Client>(clientDto);
-            await Task.Run(() => AddClient(client));
-            return client.Id;
-        }
-        public async Task UpdateClientAsync(ClientDto clientDto)
-        {
-            Client client = _mapper.Map<Client>(clientDto);
-            await Task.Run(() => UpdateClient(client));
-        }
-        public async Task DeleteClientAsync(Guid id)
-        {
-            await Task.Run(() =>
-            {
-                Client? client = GetClient(id);
-                DeleteClient(client);
-            });
-        }
-
         public void UpdateClient(Client client)
         {
             if (GetClient(client.Id) == null)
@@ -71,22 +87,9 @@ namespace BankSystem.App.Services
             _clientStorage.DeleteAsync(client);
         }
 
-
         public Client? GetClient(Guid clientId)
         {
             return _clientStorage.GetAsync(c => c.Id == clientId).Result.FirstOrDefault();
-        }
-
-        public ClientDto? GetClientDto(Guid clientId)
-        {
-            Client? client = GetClient(clientId);
-            return _mapper.Map<ClientDto>(client);
-        }
-
-        public List<ClientDto> GetClientsDto(int filterAge = 0)
-        {
-            List<Client> clients = GetClients(c => c.Age >= filterAge);
-            return _mapper.Map<List<ClientDto>>(clients);
         }
 
         public List<Client> GetClients(Func<Client, bool> predicate)
