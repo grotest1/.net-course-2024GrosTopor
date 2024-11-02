@@ -82,7 +82,7 @@ namespace BankSystem.Data.Storages
 
         public void Dispose()
         {
-            //db.Dispose();
+            db.Dispose();
         }
     }
 }

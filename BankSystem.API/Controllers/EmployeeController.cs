@@ -1,6 +1,5 @@
 ﻿using BankSystem.App.Dto;
 using BankSystem.App.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.API.Controllers
@@ -9,7 +8,6 @@ namespace BankSystem.API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-
         private EmployeeService _employeeService;
 
         public EmployeeController(EmployeeService employeeService)
@@ -32,7 +30,6 @@ namespace BankSystem.API.Controllers
             return Ok(response);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employee)
         {
@@ -53,7 +50,5 @@ namespace BankSystem.API.Controllers
             await _employeeService.DeleteEmployeetAsync(id);
             return Ok();
         }
-
-
     }
 }

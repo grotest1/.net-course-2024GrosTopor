@@ -1,7 +1,5 @@
 using BankSystem.App.Dto;
 using BankSystem.App.Services;
-using BankSystem.Data.Storages;
-using BankSystem.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.API.Controllers
@@ -32,7 +30,6 @@ namespace BankSystem.API.Controllers
             return Ok(response);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddClient([FromBody] ClientDto client)
         {
@@ -53,7 +50,5 @@ namespace BankSystem.API.Controllers
             await _clientService.DeleteClientAsync(id);
             return Ok();
         }
-
-
     }
 }
