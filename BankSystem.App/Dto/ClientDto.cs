@@ -4,6 +4,7 @@ namespace BankSystem.App.Dto
 {
     public class ClientDto
     {
+        public Guid Id { get; set; }
         public string FullName { get; set; } = "";
         public int Age { get; set; } = 0;
         public string Phone { get; set; } = "";

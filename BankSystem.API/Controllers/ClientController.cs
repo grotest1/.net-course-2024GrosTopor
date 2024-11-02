@@ -18,17 +18,40 @@ namespace BankSystem.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetClient([FromQuery] Guid guid)
+        public IActionResult GetClients()
         {
-            var response = _clientService.GetClientDto(guid);
+            var response = _clientService.GetClientsDto();
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public IActionResult GetClient(Guid id)
+        {
+            var response = _clientService.GetClientDto(id);
+            return Ok(response);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AddClient([FromBody] ClientDto client)
         {
             Guid clientId = await _clientService.AddClientAsync(client);
             return Ok(clientId);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateClient([FromBody] ClientDto client)
+        {
+            await _clientService.UpdateClientAsync(client);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteClient([FromQuery] Guid id)
+        {
+            await _clientService.DeleteClientAsync(id);
+            return Ok();
         }
 
 

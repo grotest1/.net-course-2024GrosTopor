@@ -44,6 +44,19 @@ namespace BankSystem.App.Services
             await Task.Run(() => AddClient(client));
             return client.Id;
         }
+        public async Task UpdateClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => UpdateClient(client));
+        }
+        public async Task DeleteClientAsync(Guid id)
+        {
+            await Task.Run(() =>
+            {
+                Client? client = GetClient(id);
+                DeleteClient(client);
+            });
+        }
 
         public void UpdateClient(Client client)
         {
@@ -68,6 +81,12 @@ namespace BankSystem.App.Services
         {
             Client? client = GetClient(clientId);
             return _mapper.Map<ClientDto>(client);
+        }
+
+        public List<ClientDto> GetClientsDto(int filterAge = 0)
+        {
+            List<Client> clients = GetClients(c => c.Age >= filterAge);
+            return _mapper.Map<List<ClientDto>>(clients);
         }
 
         public List<Client> GetClients(Func<Client, bool> predicate)
