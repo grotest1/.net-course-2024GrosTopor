@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BankSystem.Data.EntityConfigurations
 {
-    public class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
+    internal class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {

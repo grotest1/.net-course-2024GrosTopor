@@ -3,7 +3,7 @@
 namespace BankSystem.App.Dto
 {
     public class ClientDto : PersonDto
-    {
+    { 
         
     }
 }
