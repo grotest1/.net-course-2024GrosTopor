@@ -1,16 +1,62 @@
 ﻿using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.Data.Storages;
+using System.Threading;
+using AutoMapper;
+using BankSystem.App.Dto;
 
 namespace BankSystem.App.Services
 {
     public class ClientService
     {
         private IClientStorage _clientStorage;
+        private readonly IMapper _mapper;
+
         public ClientService(IClientStorage clientStorage)
         {
             _clientStorage = clientStorage;
+        }        
+        
+        public ClientService(IClientStorage clientStorage, IMapper mapper) : this(clientStorage)
+        {
+            _mapper = mapper;
         }
+
+        public async Task<Guid> AddClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => AddClient(client));
+            return client.Id;
+        }
+
+        public async Task UpdateClientAsync(ClientDto clientDto)
+        {
+            Client client = _mapper.Map<Client>(clientDto);
+            await Task.Run(() => UpdateClient(client));
+        }
+
+        public async Task DeleteClientAsync(Guid id)
+        {
+            await Task.Run(() =>
+            {
+                Client? client = GetClient(id);
+                DeleteClient(client);
+            });
+        }
+
+        public ClientDto? GetClientDto(Guid clientId)
+        {
+            Client? client = GetClient(clientId);
+            return _mapper.Map<ClientDto>(client);
+        }
+
+        public List<ClientDto> GetClientsDto()
+        {
+            List<Client> clients = GetClients(c => true);
+            return _mapper.Map<List<ClientDto>>(clients);
+        }
+
+
 
         public void AddClient(Client client)
         {
@@ -24,7 +70,7 @@ namespace BankSystem.App.Services
 
             Account defaultAccount = new Account() { Currency = new Currency() { Code = 840, Name = "USD" }, Client = client };
 
-            _clientStorage.AddAsync(client);
+            Task.Run(() => _clientStorage.AddAsync(client)).Wait();
             _clientStorage.AddAccountAsync(client, defaultAccount);
         }
 
@@ -40,7 +86,6 @@ namespace BankSystem.App.Services
         {
             _clientStorage.DeleteAsync(client);
         }
-
 
         public Client? GetClient(Guid clientId)
         {
