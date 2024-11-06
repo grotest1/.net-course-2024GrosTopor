@@ -12,7 +12,9 @@ namespace BancSystem.App.Tests
         [Fact]
         public async Task CurrencyConversionAsyncPositiveTestAsync1()
         {
-            float result = await CurrencyService.CurrencyConversionAsync("USD", "USD", 100);
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+            float result = await CurrencyService.CurrencyConversionAsync("USD", "USD", 100, token);
 
             Assert.Equal(100, result);
         }
@@ -20,7 +22,9 @@ namespace BancSystem.App.Tests
         [Fact]
         public async Task CurrencyConversionAsyncPositiveTestAsync2()
         {
-            float result = await CurrencyService.CurrencyConversionAsync("USD", "MDL", 100);
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+            float result = await CurrencyService.CurrencyConversionAsync("USD", "MDL", 100, token);
 
             Assert.True(result > 1700);
         }
@@ -28,7 +32,10 @@ namespace BancSystem.App.Tests
         [Fact]
         public async Task CurrencyConversionAsyncNegativeTestAsync()
         {
-            await Assert.ThrowsAsync<HttpRequestException>(() => CurrencyService.CurrencyConversionAsync("USDDDD", "MDLLLLL", 100));
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+
+            await Assert.ThrowsAsync<HttpRequestException>(() => CurrencyService.CurrencyConversionAsync("USDDDD", "MDLLLLL", 100, token));
         }
 
     }

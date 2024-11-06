@@ -13,10 +13,12 @@ namespace BankSystem.App.Services
 {
     public static class CurrencyService
     {
-        public static async Task<float> CurrencyConversionAsync(string currencyTitleFrom, string currencyTitleTo, float amount = 1)
+        public static async Task<float> CurrencyConversionAsync(string currencyTitleFrom, string currencyTitleTo, float amount, CancellationToken token)
         {
             using (HttpClient httpClient = new HttpClient())
             {
+                token.ThrowIfCancellationRequested();
+
                 var parameters = new Dictionary<string, string>();
                 parameters.Add("api_key", "YvQNW3U5Q6dtwjXpXPyJmYCpwxbBah");
                 parameters.Add("from", currencyTitleFrom);
@@ -27,7 +29,7 @@ namespace BankSystem.App.Services
                 string queryString = string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"));
                 string fullUri = "https://www.amdoren.com/api/currency.php" + "?" + queryString;
 
-                HttpResponseMessage response = await httpClient.GetAsync(fullUri);
+                HttpResponseMessage response = await httpClient.GetAsync(fullUri, token);
 
                 response.EnsureSuccessStatusCode();
 
