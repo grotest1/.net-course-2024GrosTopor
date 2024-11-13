@@ -18,8 +18,16 @@ namespace BankSystem.API.Controllers
         [HttpGet]
         public IActionResult GetClients()
         {
-            var response = _clientService.GetClientsDto();
-            return Ok(response);
+            //var response = _clientService.GetClientsDto();
+            //return Ok(response);
+
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files/hello.txt");
+            byte[] mas = System.IO.File.ReadAllBytes(path);
+            string file_type = "text/plain";
+            string file_name = "hello2.txt";
+            return File(mas, file_type, file_name);
+
+
         }
 
         [HttpGet]

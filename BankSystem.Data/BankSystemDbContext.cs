@@ -1,6 +1,8 @@
-﻿using BankSystem.Data.EntityConfigurations;
+﻿using AutoMapper.Execution;
+using BankSystem.Data.EntityConfigurations;
 using BankSystem.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BankSystem.Data
 {
@@ -11,11 +13,20 @@ namespace BankSystem.Data
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Currency> Currencies => Set<Currency>();
 
+        //public BankSystemDbContext()
+        //{
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost; Port = 5432; Database = postgres; Username = pg2; Password = pg2");
-        }
+        //}
+        //public BankSystemDbContext(IConfiguration configuration)
+        //{
+        //    var c = 1;
+        //}
+
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseNpgsql("Host=localhost; Port = 5432; Database = postgres; Username = pg2; Password = pg2");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
