@@ -1,4 +1,6 @@
 ﻿
+using BankSystem.Domain.Models;
+
 namespace BankSystem.Data.Storages
 {
     public interface IStorage<T>
@@ -6,6 +8,6 @@ namespace BankSystem.Data.Storages
         public Task AddAsync(T item);
         public Task UpdateAsync(T item);
         public Task DeleteAsync(T item);
-        public Task<List<T>> GetAsync(Func<T, bool> filter);
+        public Task<List<T>> GetAsync(Func<T, bool> filter, Func<Client, bool> sort = null);
     }
 }

@@ -8,10 +8,11 @@ namespace BankSystem.App
     {
         public MappingProfile()
         {
-            
             CreateMap<Client, ClientDto>()
                  .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name + " " + src.Surname))
-                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PersonalPhoneNumber));
+                 .ForMember(
+                        dest => dest.ManagerFio,
+                        opt => opt.MapFrom(src => src.Manager.Name));
 
             CreateMap<ClientDto, Client>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName))

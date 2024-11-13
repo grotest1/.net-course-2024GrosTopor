@@ -44,7 +44,7 @@ namespace BankSystem.Data.Storages
             });
         }
 
-        public async Task<List<Employee>> GetAsync(Func<Employee, bool> filter)
+        public async Task<List<Employee>> GetAsync(Func<Employee, bool> filter, Func<Client, bool> sort = null)
         {
             return await Task.Run(() => db.Employees.Where(filter).ToList());
         }

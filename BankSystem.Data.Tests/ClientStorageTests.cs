@@ -17,5 +17,13 @@ namespace BankSystem.Data.Tests
             Assert.Equal(1, count);
         }
 
+
+        [Fact]
+        public void GetHuet()
+        {
+            int a = 0;
+            int b = 1 / a;
+
+        }
     }
 }

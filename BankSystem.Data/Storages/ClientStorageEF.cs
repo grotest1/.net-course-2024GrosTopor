@@ -1,4 +1,6 @@
-﻿using BankSystem.Domain.Models;
+﻿//using AutoMapper.QueryableExtensions;
+using BankSystem.App.Dto;
+using BankSystem.Domain.Models;
 
 namespace BankSystem.Data.Storages
 {
@@ -42,9 +44,24 @@ namespace BankSystem.Data.Storages
             });
         }
 
-        public async Task<List<Client>> GetAsync(Func<Client, bool> filter)
+        public async Task<List<Client>> GetAsync(Func<Client, bool> filter, Func<Client, bool> sort = null)
         {
-            return await Task.Run(() => db.Clients.Where(filter).ToList());
+            //db.Clients.Where(_ => _.Name == "25")
+            //    .OrderBy(_ => _.Name)
+            //    .Skip(0)
+            //    .Take(20)
+            //    .ProjectTo<List<ClientDto>>()
+            //    .ToList();
+
+            var query = db.Clients.Where(filter);
+
+            if (sort != null)
+                query = query.OrderBy(sort);
+
+            return await Task.Run(() =>
+            {
+                return query.ToList();
+            });
         }
 
         public async Task AddAccountAsync(Client client, Account account)
