@@ -9,26 +9,40 @@ namespace BankSystem.API.Controllers
     public class ClientController : ControllerBase
     {
         private ClientService _clientService;
+        private IConfiguration _configuration;
 
-        public ClientController(ClientService clientService)
+        public ClientController(ClientService clientService, IConfiguration configuration)
         {
             _clientService = clientService;
+            _configuration = configuration;
         }
 
         [HttpGet]
         public IActionResult GetClients()
         {
-            //var response = _clientService.GetClientsDto();
-            //return Ok(response);
+            var response = _clientService.GetClientsDto();
+            return Ok(response);
+        }
 
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files/hello.txt");
-            byte[] mas = System.IO.File.ReadAllBytes(path);
+        [HttpGet]
+        [Route("files")]
+        
+        public IActionResult GetFiles()
+        {
+            string path = Path.Combine("C:", "1", "hello.txt");
+            //byte[] mas = System.IO.File.ReadAllBytes(path);
+            //string file_type = "text/plain";
+            //string file_name = "hello2.txt";
+            //return File(mas, file_type, file_name);
+
+            FileStream fs = new FileStream(path, FileMode.Open);
             string file_type = "text/plain";
-            string file_name = "hello2.txt";
-            return File(mas, file_type, file_name);
+            string file_name = "hello3.txt";
+            return File(fs, file_type, file_name);
 
 
         }
+
 
         [HttpGet]
         [Route("{id:Guid}")]

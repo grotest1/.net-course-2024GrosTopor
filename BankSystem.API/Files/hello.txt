@@ -1,6 +1,0 @@
-﻿namespace BankSystem.API.Files
-{
-    public class hello
-    {
-    }
-}

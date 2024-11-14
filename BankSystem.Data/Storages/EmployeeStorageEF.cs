@@ -4,7 +4,13 @@ namespace BankSystem.Data.Storages
 {
     public class EmployeeStorageEF : IStorage<Employee>, IDisposable
     {
-        private readonly BankSystemDbContext db = new BankSystemDbContext();
+        private readonly BankSystemDbContext db;
+        public EmployeeStorageEF(BankSystemDbContext _db)
+        {
+            db = _db;
+        }
+
+        
 
         public async Task AddAsync(Employee employee)
         {

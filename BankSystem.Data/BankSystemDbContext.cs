@@ -13,7 +13,10 @@ namespace BankSystem.Data
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Currency> Currencies => Set<Currency>();
 
+        public BankSystemDbContext(DbContextOptions<BankSystemDbContext> options) : base(options)
+        {
 
+        }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
